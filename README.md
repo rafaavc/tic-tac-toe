@@ -1,19 +1,5 @@
 # tictactoe/tic-tac-toe
 
-
-
-## Getting Started
-
-Download links:
-
-SSH clone URL: ssh://git@git.jetbrains.space/tictactoe/tictactoe/tic-tac-toe.git
-
-HTTPS clone URL: https://git.jetbrains.space/tictactoe/tictactoe/tic-tac-toe.git
-
-
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
 ## Prerequisites
 
 What things you need to install the software and how to install them.
