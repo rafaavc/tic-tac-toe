@@ -1,12 +1,16 @@
+import components.GameBoard
 import react.dom.render
 import kotlinx.browser.document
 import kotlinx.browser.window
-import react.child
+import react.dom.h1
 
 fun main() {
     window.onload = {
         render(document.getElementById("root")) {
-            child(Welcome)
+            h1 {
+                +"TicTacToe"
+            }
+            child(GameBoard)
         }
     }
 }
