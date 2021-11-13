@@ -4,14 +4,14 @@ import utilities.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePiece: GamePiece, val gameOver: Boolean = false) {
-    private val boardSize = gameBoard.size
+class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePiece: GamePiece,
+                private val boardSize: Int = 10, val gameOver: Boolean = false) {
     private val machineGamePiece = if (humanGamePiece == GamePiece.X) GamePiece.O else GamePiece.X
 
-    constructor(humanGamePiece: GamePiece)
-        : this(Array(10) {
-            Array(10) { GamePiece.EMPTY }
-        }, humanGamePiece)
+    constructor(humanGamePiece: GamePiece, boardSize: Int = 10)
+        : this(Array(boardSize) {
+            Array(boardSize) { GamePiece.EMPTY }
+        }, humanGamePiece, boardSize)
 
     private fun isInsideBoard(position: Position) = position.x in 0 until boardSize && position.y in 0 until boardSize
 
@@ -25,7 +25,7 @@ class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
         gameBoard[position.y][position.x] = gamePiece
         val isGameOver = checkGameOver(gamePiece, position)
 
-        return GameState(gameBoard, gamePiece, isGameOver)
+        return GameState(gameBoard, humanGamePiece, boardSize, isGameOver)
     }
 
     private fun checkGameOver(gamePiece: GamePiece, position: Position, target: Int = 5): Boolean {
@@ -33,15 +33,15 @@ class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
         val counts = mutableMapOf<Direction, Int>()
         for (direction in directions.keys) counts[direction] = 1
 
-        // the utilities.getDirections that are currently being considered
+        // the directions that are currently being considered
         var currentDirections = mutableMapOf<Direction, List<PositionDelta>>()
         for ((direction, deltas) in directions) currentDirections[direction] = deltas.toMutableList()
 
-        // the utilities.getDirections that will be considered in next iteration (the "children" of the previous)
+        // the directions that will be considered in next iteration (the "children" of the previous)
         var nextDirections = mutableMapOf<Direction, List<PositionDelta>>()
 
 
-        // bfs-like algorithm to check if there is 5 $gamePiece pieces in a row in any direction
+        // bfs-like algorithm to check if there is 5 ($target) $gamePiece pieces in a row in any direction
         var iteration = 1
         while(currentDirections.isNotEmpty() && iteration < target + 1) {
             for ((direction, positionDeltas) in currentDirections) {
