@@ -1,8 +1,8 @@
 package ai
 
-import game.GameState
-import utilities.Position
+import model.GameModel
+import model.utilities.Position
 
 interface Robot {
-    fun getNextPlay(gameState: GameState): Position
+    fun getNextPlay(gameState: GameModel): Position
 }

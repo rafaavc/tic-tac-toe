@@ -1,11 +1,11 @@
-package game
+package model
 
-import utilities.*
+import model.utilities.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePiece: GamePiece,
-                private val boardSize: Int = 10, val gameOver: Boolean = false) {
+class GameModel(val gameBoard: Array<Array<GamePiece>>, private val humanGamePiece: GamePiece,
+                private val boardSize: Int = 10) {
     private val machineGamePiece = if (humanGamePiece == GamePiece.X) GamePiece.O else GamePiece.X
 
     constructor(humanGamePiece: GamePiece, boardSize: Int = 10)
@@ -15,20 +15,34 @@ class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
 
     private fun isInsideBoard(position: Position) = position.x in 0 until boardSize && position.y in 0 until boardSize
 
-    private fun isValidPlay(position: Position) = isInsideBoard(position)
-                                                        && gameBoard[position.y][position.x] == GamePiece.EMPTY
+    fun isValidPlay(position: Position) = isInsideBoard(position)
+                                                    && gameBoard[position.y][position.x] == GamePiece.EMPTY
 
-    fun makePlay(player: GamePlayer, position: Position): GameState? {
-        if (!isValidPlay(position)) return null
-        val gamePiece = if (player == GamePlayer.HUMAN) humanGamePiece else machineGamePiece
+    private fun getPlayerPiece(player: GamePlayer): GamePiece
+            = if (player == GamePlayer.HUMAN) humanGamePiece else machineGamePiece
+
+    fun makePlay(player: GamePlayer, position: Position): Boolean {
+        if (!isValidPlay(position)) return false
+        val gamePiece = getPlayerPiece(player)
 
         gameBoard[position.y][position.x] = gamePiece
-        val isGameOver = checkGameOver(gamePiece, position)
 
-        return GameState(gameBoard, humanGamePiece, boardSize, isGameOver)
+        return true
     }
 
-    private fun checkGameOver(gamePiece: GamePiece, position: Position, target: Int = 5): Boolean {
+    private fun checkFilledBoard(): GameOverCheckResult {
+        for (line in gameBoard) {
+            for (piece in line) {
+                if (piece == GamePiece.EMPTY) return GameOverCheckResult(GameOverType.NOT_OVER)
+            }
+        }
+        // only gets here if there is no empty spot on the board
+        return GameOverCheckResult(GameOverType.DRAW)
+    }
+
+    fun checkGameOver(player: GamePlayer, position: Position, target: Int = 5): GameOverCheckResult {
+        val gamePiece = getPlayerPiece(player)
+
         // map that holds the count of consecutive $gamePiece pieces in each direction
         val counts = mutableMapOf<Direction, Int>()
         for (direction in directions.keys) counts[direction] = 1
@@ -59,7 +73,7 @@ class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
                     // if the current position does not continue the sequence,
                     // add the valid ones up until now to the direction count
                     counts[direction] = counts[direction]!! + iteration - 1
-                    if (counts[direction]!! >= target) return true
+                    if (counts[direction]!! >= target) return GameOverCheckResult(GameOverCheckResult.getGameOverType(player))
                 }
 
                 if (nextDeltas.size > 0) nextDirections[direction] = nextDeltas
@@ -73,6 +87,6 @@ class GameState(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
             iteration++
         }
 
-        return false
+        return checkFilledBoard()
     }
 }

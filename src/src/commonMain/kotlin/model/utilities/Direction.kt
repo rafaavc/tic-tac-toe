@@ -1,4 +1,4 @@
-package utilities
+package model.utilities
 
 enum class Direction {
     HORIZONTAL,

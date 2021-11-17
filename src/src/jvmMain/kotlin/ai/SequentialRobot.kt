@@ -1,12 +1,12 @@
 package ai
 
-import game.GamePiece
-import game.GameState
-import utilities.Position
+import model.GamePiece
+import model.GameModel
+import model.utilities.Position
 
 class SequentialRobot: Robot {
-    override fun getNextPlay(gameState: GameState): Position {
-        for ((y, line) in gameState.gameBoard.withIndex()) {
+    override fun getNextPlay(gameModel: GameModel): Position {
+        for ((y, line) in gameModel.gameBoard.withIndex()) {
             for ((x, piece) in line.withIndex()) {
                 if (piece == GamePiece.EMPTY) return Position(x, y)
             }

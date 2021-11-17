@@ -1,4 +1,4 @@
-package game
+package model
 
 enum class GamePlayer {
     HUMAN,

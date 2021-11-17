@@ -1,7 +1,7 @@
 package components
 
 import csstype.FontFamily
-import game.GamePiece
+import model.GamePiece
 import kotlinx.css.*
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event

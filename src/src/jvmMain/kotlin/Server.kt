@@ -1,7 +1,6 @@
 import ai.Robot
 import ai.SequentialRobot
-import game.GamePlayer
-import game.GameState
+import model.GameModel
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.html.respondHtml
@@ -47,9 +46,8 @@ fun main() {
                 call.respondHtml(HttpStatusCode.OK, HTML::index)
             }
             post("/play") {
-                val gameState = call.receive<GameState>()
-                val response = gameState.makePlay(GamePlayer.MACHINE, robot.getNextPlay(gameState))
-                                    ?: call.respond(HttpStatusCode.BadRequest)
+                val gameModel = call.receive<GameModel>()
+                val response = robot.getNextPlay(gameModel)
 
                 call.respond(response)
             }
