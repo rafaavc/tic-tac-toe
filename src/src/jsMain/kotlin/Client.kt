@@ -1,8 +1,8 @@
-import components.GameBoard
 import react.dom.render
 import kotlinx.browser.document
 import kotlinx.browser.window
 import react.dom.h1
+import view.GameContainer
 
 fun main() {
     window.onload = {
@@ -10,7 +10,7 @@ fun main() {
             h1 {
                 +"TicTacToe"
             }
-            child(GameBoard)
+            child(GameContainer)
         }
     }
 }

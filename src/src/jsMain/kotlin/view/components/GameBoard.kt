@@ -1,39 +1,44 @@
-package components
+package view.components
 
-import state.GameState
-import state.PlayingGameState
 import getMachinePlay
 import kotlinx.coroutines.*
 import kotlinx.css.*
-import model.GamePiece
+import kotlinx.html.js.onClickFunction
 import model.GamePlayer
-import model.GameModel
 import org.w3c.dom.events.Event
 import react.*
 import react.dom.*
 import styled.*
 import model.utilities.Position
+import view.ViewProps
 
 private val scope = MainScope()
 
-val GameBoard = fc<Props> {
+val GameBoard = fc<ViewProps> { props ->
     // either repeatedly assign a new state to this variable or force the component to rerender manually
-    var gameState: GameState by useState(PlayingGameState(GameModel(GamePiece.X)))
     var waitingForServer by useState(false)
+    val gameState = props.gameState
 
     val makePlay: (Int, Int) -> ((Event) -> Unit) = { x, y -> {
-            gameState = (gameState.clickSquare(GamePlayer.HUMAN, Position(x, y)) ?: error("Invalid play!"))
+            (gameState.clickSquare(GamePlayer.HUMAN, Position(x, y)) ?: error("Invalid play!"))
                 .also {
                     if (!it.isGameOver()) {
                         waitingForServer = true
                         scope.launch {
-                            delay(1000)
-                            gameState = gameState.clickSquare(GamePlayer.MACHINE, getMachinePlay(it.gameModel))!!
+                            delay(300)
+                            gameState.clickSquare(GamePlayer.MACHINE, getMachinePlay(it.gameModel!!))
                             waitingForServer = false
                         }
                     }
                 }
         }
+    }
+
+    button {
+        attrs {
+            onClickFunction = { _ -> gameState.pause() }
+        }
+        +"Pause"
     }
 
     if (gameState.isGameOver()) {
@@ -53,7 +58,7 @@ val GameBoard = fc<Props> {
         }
     }
 
-    for ((y, line) in gameState.gameModel.gameBoard.withIndex()) {
+    for ((y, line) in gameState.gameModel!!.gameBoard.withIndex()) {
         div {
             key = y.toString()
             for ((x, gamePiece) in line.withIndex()) {
@@ -61,7 +66,7 @@ val GameBoard = fc<Props> {
                     key = x.toString() + y.toString()
                     attrs {
                         piece = gamePiece
-                        onClickFunction = makePlay(x, y)
+                        onClickFunction = if (gameState.canClickSquare(Position(x, y))) makePlay(x, y) else { _ -> println("Can't click!") }
                         canClick = !gameState.isGameOver() && !waitingForServer
                     }
                 }
