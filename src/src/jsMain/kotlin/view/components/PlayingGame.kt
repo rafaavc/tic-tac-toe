@@ -45,12 +45,13 @@ val PlayingGame = fc<ViewProps> { props ->
         !gameState.isGameOver() && !waitingForServer && gameState.canClickSquare(Position(x, y))
     }
 
-    button {
-        attrs {
-            onClickFunction = { _ -> gameState.pause() }
+    if (!waitingForServer)
+        button {
+            attrs {
+                onClickFunction = { _ -> gameState.pause() }
+            }
+            +"Pause"
         }
-        +"Pause"
-    }
 
     if (waitingForServer) {
         p {
