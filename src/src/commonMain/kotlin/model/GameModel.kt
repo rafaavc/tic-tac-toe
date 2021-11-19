@@ -79,10 +79,9 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
                 if (nextDeltas.size > 0) nextDirections[direction] = nextDeltas
             }
 
-            currentDirections = nextDirections.let {
+            currentDirections = nextDirections.also {
                 nextDirections = currentDirections
                 nextDirections.clear()
-                it
             }
             iteration++
         }

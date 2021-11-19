@@ -6,8 +6,9 @@ import model.GamePlayer
 import model.utilities.Position
 import react.StateSetter
 import view.components.GameBoard
+import view.components.PlayingGame
 
-class PlayingGameState(gameModel: GameModel, setGameState: StateSetter<GameState?>) : GameState(gameModel, GameBoard, setGameState) {
+class PlayingGameState(gameModel: GameModel, setGameState: StateSetter<GameState?>) : GameState(gameModel, PlayingGame, setGameState) {
     override fun canClickSquare(squarePosition: Position): Boolean = gameModel!!.isValidPlay(squarePosition)
 
     private fun getNextGameState(gameOverCheckResult: GameOverCheckResult): GameState {
