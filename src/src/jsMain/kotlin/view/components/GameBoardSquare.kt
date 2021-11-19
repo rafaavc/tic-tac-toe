@@ -14,6 +14,7 @@ external interface GameBoardSquareProps : Props {
     var piece: GamePiece
     var onClickFunction: (Event) -> Unit
     var canClick: Boolean
+    var highlighted: Boolean
 }
 
 val GameBoardSquare = fc<GameBoardSquareProps> { props ->
@@ -27,6 +28,7 @@ val GameBoardSquare = fc<GameBoardSquareProps> { props ->
             marginRight = LinearDimension("1rem")
             cursor = Cursor.pointer
             userSelect = UserSelect.none
+            color = if (props.highlighted) Color.red else Color.black
         }
         if (props.canClick) {
             attrs {

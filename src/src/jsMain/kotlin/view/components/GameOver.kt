@@ -24,6 +24,7 @@ val GameOver = fc<ViewProps> { props ->
     child(GameBoard) {
         attrs {
             this.gameState = gameState
+            highlightedPieces = gameState.getHighlightedPieces()
         }
     }
 }

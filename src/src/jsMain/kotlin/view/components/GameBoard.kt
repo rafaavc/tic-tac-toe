@@ -1,5 +1,6 @@
 package view.components
 
+import model.utilities.Position
 import org.w3c.dom.events.Event
 import react.*
 import react.dom.*
@@ -8,6 +9,7 @@ import view.ViewProps
 external interface GameBoardProps : ViewProps {
     var getOnClickFunction: ((Int, Int) -> ((Event) -> Unit))?
     var canClick: ((Int, Int) -> Boolean)?
+    var highlightedPieces: Set<Position>?
 }
 
 val GameBoard = fc<GameBoardProps> { props ->
@@ -23,6 +25,7 @@ val GameBoard = fc<GameBoardProps> { props ->
                         piece = gamePiece
                         onClickFunction = props.getOnClickFunction?.run { this(x, y) } ?: {}
                         canClick = props.canClick?.run { this(x, y) } ?: false
+                        highlighted = props.highlightedPieces != null && Position(x, y) in props.highlightedPieces!!
                     }
                 }
             }

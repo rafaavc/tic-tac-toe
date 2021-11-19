@@ -40,8 +40,12 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
         return GameOverCheckResult(GameOverType.DRAW)
     }
 
-    fun checkGameOver(player: GamePlayer, position: Position, target: Int = 5): GameOverCheckResult {
+    fun checkGameOver(player: GamePlayer, position: Position, getWinningPieces: Boolean = false, target: Int = 5): GameOverCheckResult {
         val gamePiece = getPlayerPiece(player)
+
+        val winningPieces = (if (getWinningPieces) mutableMapOf<Direction, MutableSet<Position>>() else null)?.also {
+            for ((direction, _) in directions) it[direction] = mutableSetOf(position)
+        }
 
         // map that holds the count of consecutive $gamePiece pieces in each direction
         val counts = mutableMapOf<Direction, Int>()
@@ -65,15 +69,24 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
                 for (positionDelta in positionDeltas) {
                     val currentPosition = position + positionDelta * iteration
 
-                    if (isInsideBoard(currentPosition) && gameBoard[currentPosition.y][currentPosition.x] == gamePiece) {
+                    val currentTotalCountForDirection = counts[direction]!! + iteration - 1
+
+                    if (isInsideBoard(currentPosition) && gameBoard[currentPosition.y][currentPosition.x] == gamePiece && currentTotalCountForDirection < target) {
                         nextDeltas.add(positionDelta)
+                        winningPieces?.run {
+                            this[direction]!!.add(currentPosition)
+                        }
                         continue
                     }
 
                     // if the current position does not continue the sequence,
                     // add the valid ones up until now to the direction count
-                    counts[direction] = counts[direction]!! + iteration - 1
-                    if (counts[direction]!! >= target) return GameOverCheckResult(GameOverCheckResult.getGameOverType(player))
+                    counts[direction] = currentTotalCountForDirection
+                    if (counts[direction]!! >= target)
+                        return GameOverCheckResult(GameOverCheckResult.getGameOverType(player),
+                                    winningPieces?.run {
+                                        winningPieces[direction]!!
+                                    })
                 }
 
                 if (nextDeltas.size > 0) nextDirections[direction] = nextDeltas

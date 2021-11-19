@@ -12,14 +12,14 @@ class PlayingGameState(gameModel: GameModel, setGameState: StateSetter<GameState
     override fun canClickSquare(squarePosition: Position): Boolean = gameModel!!.isValidPlay(squarePosition)
 
     private fun getNextGameState(gameOverCheckResult: GameOverCheckResult): GameState {
-        if (gameOverCheckResult.isOver()) return GameOverGameState(gameModel!!, setGameState, gameOverCheckResult.type)
+        if (gameOverCheckResult.isOver()) return GameOverGameState(gameModel!!, setGameState, gameOverCheckResult)
         return PlayingGameState(gameModel!!, setGameState)
     }
 
     override fun clickSquare(player: GamePlayer, squarePosition: Position): GameState? {
         if (!gameModel!!.makePlay(player, squarePosition)) return null
 
-        val gameOverCheckResult = gameModel.checkGameOver(player, squarePosition)
+        val gameOverCheckResult = gameModel.checkGameOver(player, squarePosition, getWinningPieces = true)
 
         // maybe change this for a call to setGameState() hook?
         return getNextGameState(gameOverCheckResult).also {
