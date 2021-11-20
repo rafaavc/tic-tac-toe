@@ -14,7 +14,7 @@ class MCTSRobot : Robot {
 
         var count = 0
         val start = System.currentTimeMillis()
-        while(System.currentTimeMillis() - start < 2000) {
+        while(System.currentTimeMillis() - start < 3000) {
             val promisingNode = root.findBestDescendantUCT()
             if (!promisingNode.isGameOver())
                 promisingNode.expand()

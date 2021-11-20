@@ -9,13 +9,15 @@ import react.FC
 import react.StateSetter
 import view.ViewProps
 
-abstract class GameState(val gameModel: GameModel?, val gameView: FC<ViewProps>, protected val setGameState: StateSetter<GameState?>) {
+abstract class GameState(val gameModel: GameModel?, val gameView: FC<ViewProps>,
+         protected val setGameState: StateSetter<GameState?>, protected val setWaitingForServer: StateSetter<Boolean>) {
+
     private fun nothingToDo() {
         println("Nothing to do here!")
     }
 
     fun quit() {
-        setGameState(WelcomeScreenState(setGameState))
+        setGameState(WelcomeScreenState(setGameState, setWaitingForServer))
     }
 
     open fun canClickSquare(squarePosition: Position): Boolean = false

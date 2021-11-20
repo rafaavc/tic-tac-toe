@@ -6,8 +6,9 @@ import state.WelcomeScreenState
 
 val GameContainer = fc<Props> {
     val (gameState, setGameState) = useState<GameState?>(null)
+    val (waitingForServer, setWaitingForServer) = useState<Boolean>(false)
     useEffectOnce {
-        setGameState(WelcomeScreenState(setGameState))
+        setGameState(WelcomeScreenState(setGameState, setWaitingForServer))
     }
 
     if (gameState == null) return@fc
@@ -15,6 +16,7 @@ val GameContainer = fc<Props> {
     child(gameState.gameView) {
         attrs {
             this.gameState = gameState
+            this.waitingForServer = waitingForServer
         }
     }
 }

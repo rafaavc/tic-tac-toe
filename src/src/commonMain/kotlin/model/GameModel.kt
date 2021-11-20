@@ -30,10 +30,41 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, val humanGamePiece: Game
     fun isValidPlay(position: Position) = isInsideBoard(position)
                                                     && gameBoard[position.y][position.x] == GamePiece.EMPTY
 
-    fun getPossibleMoves(): MutableSet<Position> {
+    fun getPossibleMoves(lowerScope: Boolean = false): MutableSet<Position> {
+        // when lowerScope is true, this only gets the possible moves that do not
+        // deviate a lot from sub-square where are the current pieces in the game
+        var minY = boardSize - 1
+        var maxY = 0
+        var minX = minY
+        var maxX = maxY
+
+        var foundPiece = false
+        if (lowerScope) {
+            for ((y, line) in gameBoard.withIndex()) {
+                for ((x, _) in line.withIndex()) {
+                    if (gameBoard[y][x] != GamePiece.EMPTY) {
+                        minY = minOf(minY, y)
+                        maxY = maxOf(maxY, y)
+                        minX = minOf(minX, x)
+                        maxX = maxOf(maxX, x)
+                        foundPiece = true
+                    }
+                }
+            }
+        }
+        if (!lowerScope || !foundPiece) {
+            minY = maxY.also { maxY = minY }
+            minX = maxX.also { maxX = minX }
+        }
+
         val possibleMoves = mutableSetOf<Position>()
         for ((y, line) in gameBoard.withIndex()) {
+            if (y < minY - 1) continue
+            if (y > maxY + 1) break
             for ((x, _) in line.withIndex()) {
+                if (x < minX - 1) continue
+                if (x > maxX + 1) break
+
                 val position = Position(x, y)
                 if (isValidPlay(position)) possibleMoves.add(position)
             }

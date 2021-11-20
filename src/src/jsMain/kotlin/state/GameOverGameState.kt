@@ -9,7 +9,10 @@ import react.StateSetter
 import view.components.GameBoard
 import view.components.GameOver
 
-class GameOverGameState(gameModel: GameModel, setGameState: StateSetter<GameState?>, private val gameOverCheckResult: GameOverCheckResult) : GameState(gameModel, GameOver, setGameState) {
+class GameOverGameState(gameModel: GameModel, setGameState: StateSetter<GameState?>,
+        setWaitingForServer: StateSetter<Boolean>, private val gameOverCheckResult: GameOverCheckResult)
+            : GameState(gameModel, GameOver, setGameState, setWaitingForServer) {
+
     override fun isGameOver(): Boolean = true
     override fun getGameOverType(): GameOverType = gameOverCheckResult.type
     override fun getWinningPieces(): Set<Position>? = gameOverCheckResult.winningPieces

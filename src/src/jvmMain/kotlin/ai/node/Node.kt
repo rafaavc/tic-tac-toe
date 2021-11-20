@@ -12,7 +12,7 @@ open class Node(val gameModel: GameModel, private val gameOverCheckResult: GameO
 
     protected fun executePossibleMoves(): List<Triple<GameModel, GameOverCheckResult, Position>> {
         val player = if (isMaximizer) GamePlayer.MACHINE else GamePlayer.HUMAN
-        val possibleMoves = gameModel.getPossibleMoves()
+        val possibleMoves = gameModel.getPossibleMoves(true)
         val newModels = mutableListOf<Triple<GameModel, GameOverCheckResult, Position>>()
 
         for (move in possibleMoves) {
