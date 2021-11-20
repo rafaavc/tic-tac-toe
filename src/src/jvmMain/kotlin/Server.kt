@@ -1,3 +1,4 @@
+import ai.MCTSRobot
 import ai.MiniMaxRobot
 import ai.Robot
 import ai.SequentialRobot
@@ -29,7 +30,7 @@ fun HTML.index() {
 }
 
 fun main() {
-    val robot: Robot = MiniMaxRobot()
+    val robot: Robot = MCTSRobot()
 
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
         install(ContentNegotiation) {

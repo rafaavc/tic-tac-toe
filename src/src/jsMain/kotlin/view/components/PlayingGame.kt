@@ -32,7 +32,6 @@ val PlayingGame = fc<ViewProps> { props ->
                     if (!it.isGameOver()) {
                         waitingForServer = true
                         scope.launch {
-                            delay(300)
                             gameState.clickSquare(GamePlayer.MACHINE, getMachinePlay(it.gameModel!!))
                             waitingForServer = false
                         }

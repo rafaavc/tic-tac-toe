@@ -28,11 +28,22 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, val humanGamePiece: Game
     fun isValidPlay(position: Position) = isInsideBoard(position)
                                                     && gameBoard[position.y][position.x] == GamePiece.EMPTY
 
+    fun getPossibleMoves(): MutableSet<Position> {
+        val possibleMoves = mutableSetOf<Position>()
+        for ((y, line) in gameBoard.withIndex()) {
+            for ((x, _) in line.withIndex()) {
+                val position = Position(x, y)
+                if (isValidPlay(position)) possibleMoves.add(position)
+            }
+        }
+        return possibleMoves
+    }
+
     private fun getPlayerPiece(player: GamePlayer): GamePiece
             = if (player == GamePlayer.HUMAN) humanGamePiece else machineGamePiece
 
-    fun makePlay(player: GamePlayer, position: Position): Boolean {
-        if (!isValidPlay(position)) return false
+    fun makePlay(player: GamePlayer, position: Position, checkForValidPlay: Boolean = true): Boolean {
+        if (checkForValidPlay && !isValidPlay(position)) return false
         val gamePiece = getPlayerPiece(player)
 
         gameBoard[position.y][position.x] = gamePiece

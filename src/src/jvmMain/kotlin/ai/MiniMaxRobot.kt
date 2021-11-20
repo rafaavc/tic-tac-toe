@@ -10,7 +10,7 @@ class MiniMaxRobot : Robot {
     private val infinity = 10000
 
     override fun getNextPlay(gameModel: GameModel): Position {
-        val res = minimax(Node(gameModel, GameOverCheckResult(GameOverType.NOT_OVER)), -infinity, infinity, true)
+        val res = minimax(Node(gameModel, GameOverCheckResult(GameOverType.NOT_OVER), true), -infinity, infinity, true)
         return res.first ?: error("got null position :/")
     }
 
@@ -20,7 +20,7 @@ class MiniMaxRobot : Robot {
         var currentAlpha = alpha
         var currentBeta = beta
 
-        node.expand(isMaximizer)
+        node.expand()
 
         var bestRes: Pair<Position?, Int> = Pair(null, (if (isMaximizer) -1 else 1) * infinity)
         for (child in node.getChildren()) {
