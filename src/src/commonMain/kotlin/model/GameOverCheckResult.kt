@@ -6,8 +6,8 @@ class GameOverCheckResult(val type: GameOverType, val winningPieces: Set<Positio
     fun isOver(): Boolean = type != GameOverType.NOT_OVER
     companion object {
         fun getGameOverType(player: GamePlayer): GameOverType = when (player) {
-                GamePlayer.MACHINE -> GameOverType.MACHINE_VICTORY
-                GamePlayer.HUMAN -> GameOverType.HUMAN_VICTORY
+                GamePlayer.PLAYER2 -> GameOverType.PLAYER2_VICTORY
+                GamePlayer.PLAYER1 -> GameOverType.PLAYER1_VICTORY
             }
     }
 }

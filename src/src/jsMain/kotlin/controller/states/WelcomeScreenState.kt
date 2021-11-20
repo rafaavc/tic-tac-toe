@@ -12,4 +12,5 @@ class WelcomeScreenState(
     override fun play() {
         setGameState(PieceSelectionState(setGameState, setWaitingForServer))
     }
+
 }

@@ -36,7 +36,7 @@ class MCTSRobot : Robot {
     }
 
     private fun getPlayerFromIsMaximizer(isMaximizer: Boolean): GamePlayer
-        = if (isMaximizer) GamePlayer.MACHINE else GamePlayer.HUMAN
+        = if (isMaximizer) GamePlayer.PLAYER2 else GamePlayer.PLAYER1
 
     private fun simulateRandomPlayout(node: MCTSNode): GameOverCheckResult {
         val gameModel = node.gameModel.copy()

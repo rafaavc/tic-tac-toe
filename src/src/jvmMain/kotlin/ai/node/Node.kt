@@ -15,7 +15,7 @@ open class Node(
     protected var expanded = false
 
     protected fun executePossibleMoves(): List<Triple<GameModel, GameOverCheckResult, Position>> {
-        val player = if (isMaximizer) GamePlayer.MACHINE else GamePlayer.HUMAN
+        val player = if (isMaximizer) GamePlayer.PLAYER2 else GamePlayer.PLAYER1
         val possibleMoves = gameModel.getPossibleMoves(true)
         val newModels = mutableListOf<Triple<GameModel, GameOverCheckResult, Position>>()
 
@@ -47,8 +47,8 @@ open class Node(
         return when(gameOverCheckResult.type) {
             GameOverType.DRAW -> 0
             GameOverType.NOT_OVER -> throw Exception("Trying to get eval without game being over!")
-            GameOverType.HUMAN_VICTORY -> -score
-            GameOverType.MACHINE_VICTORY -> score
+            GameOverType.PLAYER1_VICTORY -> -score
+            GameOverType.PLAYER2_VICTORY -> score
         }
     }
 

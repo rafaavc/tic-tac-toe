@@ -2,7 +2,7 @@ package model
 
 enum class GameOverType {
     DRAW,
-    HUMAN_VICTORY,
-    MACHINE_VICTORY,
+    PLAYER1_VICTORY,
+    PLAYER2_VICTORY,
     NOT_OVER
 }

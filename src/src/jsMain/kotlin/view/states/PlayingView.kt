@@ -16,16 +16,17 @@ import view.ViewProps
 import view.components.GameBoard
 
 val PlayingGame = fc<ViewProps> { props ->
-    // either repeatedly assign a new state to this variable or force the component to rerender manually
     val gameState = props.gameState
 
+    if (gameState.model == null) error("The game model is not set in the current playing state!")
+
     val makePlay: (Int, Int) -> ((Event) -> Unit) = { x, y -> {
-            gameState.clickSquare(GamePlayer.HUMAN, Position(x, y)) ?: error("Invalid play!")
+            gameState.makeMove(GamePlayer.PLAYER1, Position(x, y)) ?: error("Invalid play!")
         }
     }
 
     val canClick: (Int, Int) -> Boolean = { x, y ->
-        !gameState.isGameOver() && !props.waitingForServer && gameState.canClickSquare(Position(x, y))
+        !props.waitingForServer && gameState.canMakeMove(Position(x, y))
     }
 
     if (!props.waitingForServer)
@@ -51,7 +52,7 @@ val PlayingGame = fc<ViewProps> { props ->
     child(GameBoard) {
         attrs {
             getOnClickFunction = makePlay
-            lastPlay = gameState.getLastPlay()
+            lastPlay = gameState.model.lastPlay
             this.canClick = canClick
             this.gameState = gameState
         }

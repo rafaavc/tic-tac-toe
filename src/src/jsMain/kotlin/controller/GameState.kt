@@ -2,7 +2,6 @@ package controller
 
 import controller.states.WelcomeScreenState
 import model.GameModel
-import model.GameOverType
 import model.GamePiece
 import model.GamePlayer
 import model.utilities.Position
@@ -25,13 +24,10 @@ abstract class GameState(
         setGameState(WelcomeScreenState(setGameState, setWaitingForServer))
     }
 
-    open fun canClickSquare(squarePosition: Position): Boolean = false
-    open fun clickSquare(player: GamePlayer, squarePosition: Position): GameState? = null
-    open fun isGameOver(): Boolean = false
-    open fun getGameOverType(): GameOverType = GameOverType.NOT_OVER
-    open fun getWinningPieces(): Set<Position>? = null
-    open fun getLastPlay(): Position? = null
+    open fun canMakeMove(squarePosition: Position): Boolean = false
+    open fun makeMove(player: GamePlayer, squarePosition: Position): GameState? = null
     open fun choosePlayer(piece: GamePiece) { nothingToDo() }
     open fun play() { nothingToDo() }
     open fun pause() { nothingToDo() }
+    open fun isGameOver(): Boolean = false
 }

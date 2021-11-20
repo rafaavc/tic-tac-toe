@@ -1,6 +1,7 @@
 package controller.states
 
 import controller.GameState
+import controller.move.HvMStrategy
 import model.GameModel
 import model.GamePiece
 import react.StateSetter
@@ -12,7 +13,9 @@ class PieceSelectionState(
 ) : GameState(null, PieceSelection, setGameState, setWaitingForServer) {
 
     override fun choosePlayer(piece: GamePiece) {
-        setGameState(PlayingGameState(GameModel(piece), setGameState, setWaitingForServer))
+        val model = GameModel(piece)
+        val moveStrategy = HvMStrategy(model, setGameState, setWaitingForServer)
+        setGameState(PlayingState(model, setGameState, setWaitingForServer, moveStrategy))
     }
 
 }

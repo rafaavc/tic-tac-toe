@@ -1,6 +1,6 @@
 package model
 
 enum class GamePlayer {
-    HUMAN,
-    MACHINE
+    PLAYER1,
+    PLAYER2  // when HvM, machine
 }

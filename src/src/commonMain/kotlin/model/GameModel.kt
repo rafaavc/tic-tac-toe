@@ -6,16 +6,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 class GameModel(
     val gameBoard: Array<Array<GamePiece>>,
-    val humanGamePiece: GamePiece,
+    val player1GamePiece: GamePiece,
     private val boardSize: Int = 10
 ) {
-    private val machineGamePiece = if (humanGamePiece == GamePiece.X) GamePiece.O else GamePiece.X
+    private val player2GamePiece = if (player1GamePiece == GamePiece.X) GamePiece.O else GamePiece.X
     var lastPlay: Position? = null
 
-    constructor(humanGamePiece: GamePiece, boardSize: Int = 10)
+    constructor(player1GamePiece: GamePiece, boardSize: Int = 10)
         : this(Array(boardSize) {
             Array(boardSize) { GamePiece.EMPTY }
-        }, humanGamePiece, boardSize)
+        }, player1GamePiece, boardSize)
 
     private fun copyGameBoard(): Array<Array<GamePiece>> {
         return Array(boardSize) { y ->
@@ -25,7 +25,7 @@ class GameModel(
         }
     }
 
-    fun copy(): GameModel = GameModel(copyGameBoard(), humanGamePiece)
+    fun copy(): GameModel = GameModel(copyGameBoard(), player1GamePiece)
 
     private fun isInsideBoard(position: Position) = position.x in 0 until boardSize && position.y in 0 until boardSize
 
@@ -75,7 +75,7 @@ class GameModel(
     }
 
     private fun getPlayerPiece(player: GamePlayer): GamePiece
-            = if (player == GamePlayer.HUMAN) humanGamePiece else machineGamePiece
+            = if (player == GamePlayer.PLAYER1) player1GamePiece else player2GamePiece
 
     fun makePlay(player: GamePlayer, position: Position, checkForValidPlay: Boolean = true): Boolean {
         if (checkForValidPlay && !isValidPlay(position)) return false

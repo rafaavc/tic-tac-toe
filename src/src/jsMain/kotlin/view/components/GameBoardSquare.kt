@@ -27,7 +27,7 @@ val GameBoardSquare = fc<GameBoardSquareProps> { props ->
             fontFamily = FontFamily.monospace.toString()
             fontSize = LinearDimension("2rem")
             marginRight = LinearDimension("1rem")
-            cursor = Cursor.pointer
+            cursor = if (props.canClick) Cursor.pointer else Cursor.auto
             userSelect = UserSelect.none
             color = if (props.won) Color.red else {
                 if (props.lastPlay) Color.green else Color.black

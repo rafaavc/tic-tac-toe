@@ -1,5 +1,6 @@
 package view.states
 
+import controller.states.GameOverState
 import kotlinx.html.js.onClickFunction
 import react.dom.attrs
 import react.dom.button
@@ -9,7 +10,7 @@ import view.ViewProps
 import view.components.GameBoard
 
 val GameOver = fc<ViewProps> { props ->
-    val gameState = props.gameState
+    val gameState = props.gameState as GameOverState
 
     button {
         attrs {
@@ -19,13 +20,13 @@ val GameOver = fc<ViewProps> { props ->
     }
 
     p {
-        +"${gameState.getGameOverType()}"
+        +"${gameState.gameOverCheckResult.type}"
     }
 
     child(GameBoard) {
         attrs {
             this.gameState = gameState
-            winningPieces = gameState.getWinningPieces()
+            winningPieces = gameState.gameOverCheckResult.winningPieces
         }
     }
 }

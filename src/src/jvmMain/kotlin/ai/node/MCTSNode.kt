@@ -19,8 +19,8 @@ class MCTSNode(
     private var numberOfVisits = 0
 
     fun incrementWins(gameOverType: GameOverType) {
-        if (gameOverType == GameOverType.MACHINE_VICTORY) numberOfWins++
-        else if (gameOverType == GameOverType.HUMAN_VICTORY) numberOfWins--
+        if (gameOverType == GameOverType.PLAYER2_VICTORY) numberOfWins++
+        else if (gameOverType == GameOverType.PLAYER1_VICTORY) numberOfWins--
     }
 
     fun incrementNumberOfVisits() {
