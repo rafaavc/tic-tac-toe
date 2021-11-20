@@ -1,19 +1,34 @@
 package state
 
+import getMachinePlay
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import model.GameModel
 import model.GameOverCheckResult
+import model.GamePiece
 import model.GamePlayer
 import model.utilities.Position
 import react.StateSetter
-import view.components.GameBoard
 import view.components.PlayingGame
 
-class PlayingGameState(gameModel: GameModel, setGameState: StateSetter<GameState?>) : GameState(gameModel, PlayingGame, setGameState) {
+private val scope = MainScope()
+
+class PlayingGameState(gameModel: GameModel, setGameState: StateSetter<GameState?>, isBeginning: Boolean = true)
+        : GameState(gameModel, PlayingGame, setGameState) {
+
+    init {
+        if (isBeginning && gameModel.humanGamePiece == GamePiece.O)
+            scope.launch {
+                // TODO the game must wait for the first machine play
+                clickSquare(GamePlayer.MACHINE, getMachinePlay(gameModel))
+            }
+    }
+
     override fun canClickSquare(squarePosition: Position): Boolean = gameModel!!.isValidPlay(squarePosition)
 
     private fun getNextGameState(gameOverCheckResult: GameOverCheckResult): GameState {
         if (gameOverCheckResult.isOver()) return GameOverGameState(gameModel!!, setGameState, gameOverCheckResult)
-        return PlayingGameState(gameModel!!, setGameState)
+        return PlayingGameState(gameModel!!, setGameState, false)
     }
 
     override fun clickSquare(player: GamePlayer, squarePosition: Position): GameState? {

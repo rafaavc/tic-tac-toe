@@ -4,7 +4,7 @@ import model.utilities.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-class GameModel(val gameBoard: Array<Array<GamePiece>>, private val humanGamePiece: GamePiece,
+class GameModel(val gameBoard: Array<Array<GamePiece>>, val humanGamePiece: GamePiece,
                 private val boardSize: Int = 10) {
     private val machineGamePiece = if (humanGamePiece == GamePiece.X) GamePiece.O else GamePiece.X
 
@@ -12,6 +12,16 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, private val humanGamePie
         : this(Array(boardSize) {
             Array(boardSize) { GamePiece.EMPTY }
         }, humanGamePiece, boardSize)
+
+    private fun copyGameBoard(): Array<Array<GamePiece>> {
+        return Array(boardSize) { y ->
+            Array(boardSize) { x ->
+                gameBoard[y][x]
+            }
+        }
+    }
+
+    fun copy(): GameModel = GameModel(copyGameBoard(), humanGamePiece)
 
     private fun isInsideBoard(position: Position) = position.x in 0 until boardSize && position.y in 0 until boardSize
 
