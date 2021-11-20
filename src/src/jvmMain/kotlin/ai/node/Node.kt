@@ -3,9 +3,13 @@ package ai.node
 import model.*
 import model.utilities.Position
 
-open class Node(val gameModel: GameModel, private val gameOverCheckResult: GameOverCheckResult,
-        val isMaximizer: Boolean, val parent: Node? = null, val move: Position? = null) {
-
+open class Node(
+    val gameModel: GameModel,
+    private val gameOverCheckResult: GameOverCheckResult,
+    val isMaximizer: Boolean,
+    val parent: Node? = null,
+    val move: Position? = null
+) {
     private val score = 10
     protected val nodeChildren = mutableListOf<Node>()
     protected var expanded = false

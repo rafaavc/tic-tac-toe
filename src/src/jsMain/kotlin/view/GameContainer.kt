@@ -1,8 +1,8 @@
 package view
 
 import react.*
-import state.GameState
-import state.WelcomeScreenState
+import controller.GameState
+import controller.states.WelcomeScreenState
 
 val GameContainer = fc<Props> {
     val (gameState, setGameState) = useState<GameState?>(null)

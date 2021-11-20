@@ -4,9 +4,11 @@ import model.utilities.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-class GameModel(val gameBoard: Array<Array<GamePiece>>, val humanGamePiece: GamePiece,
-                private val boardSize: Int = 10) {
-
+class GameModel(
+    val gameBoard: Array<Array<GamePiece>>,
+    val humanGamePiece: GamePiece,
+    private val boardSize: Int = 10
+) {
     private val machineGamePiece = if (humanGamePiece == GamePiece.X) GamePiece.O else GamePiece.X
     var lastPlay: Position? = null
 
@@ -32,7 +34,7 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, val humanGamePiece: Game
 
     fun getPossibleMoves(lowerScope: Boolean = false): MutableSet<Position> {
         // when lowerScope is true, this only gets the possible moves that do not
-        // deviate a lot from sub-square where are the current pieces in the game
+        // deviate more than 1 position from the sub-square where the current pieces are in the game
         var minY = boardSize - 1
         var maxY = 0
         var minX = minY

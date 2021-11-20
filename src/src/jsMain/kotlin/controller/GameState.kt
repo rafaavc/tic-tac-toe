@@ -1,5 +1,6 @@
-package state
+package controller
 
+import controller.states.WelcomeScreenState
 import model.GameModel
 import model.GameOverType
 import model.GamePiece
@@ -9,8 +10,12 @@ import react.FC
 import react.StateSetter
 import view.ViewProps
 
-abstract class GameState(val gameModel: GameModel?, val gameView: FC<ViewProps>,
-         protected val setGameState: StateSetter<GameState?>, protected val setWaitingForServer: StateSetter<Boolean>) {
+abstract class GameState(
+    val model: GameModel?,
+    val gameView: FC<ViewProps>,
+    protected val setGameState: StateSetter<GameState?>,
+    protected val setWaitingForServer: StateSetter<Boolean>
+) {
 
     private fun nothingToDo() {
         println("Nothing to do here!")

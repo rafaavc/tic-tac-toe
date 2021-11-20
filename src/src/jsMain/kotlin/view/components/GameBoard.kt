@@ -16,7 +16,7 @@ external interface GameBoardProps : ViewProps {
 val GameBoard = fc<GameBoardProps> { props ->
     val gameState = props.gameState
 
-    for ((y, line) in gameState.gameModel!!.gameBoard.withIndex()) {
+    for ((y, line) in gameState.model!!.gameBoard.withIndex()) {
         div {
             key = y.toString()
             for ((x, gamePiece) in line.withIndex()) {

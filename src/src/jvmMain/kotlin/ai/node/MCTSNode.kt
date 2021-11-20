@@ -7,9 +7,13 @@ import model.utilities.Position
 import kotlin.math.ln
 import kotlin.math.sqrt
 
-class MCTSNode(gameModel: GameModel, gameOverCheckResult: GameOverCheckResult,
-               isMaximizer: Boolean, parent: MCTSNode? = null, move: Position? = null)
-        : Node(gameModel, gameOverCheckResult, isMaximizer, parent, move) {
+class MCTSNode(
+    gameModel: GameModel,
+    gameOverCheckResult: GameOverCheckResult,
+    isMaximizer: Boolean,
+    parent: MCTSNode? = null,
+    move: Position? = null
+) : Node(gameModel, gameOverCheckResult, isMaximizer, parent, move) {
 
     private var numberOfWins = 0
     private var numberOfVisits = 0

@@ -1,4 +1,4 @@
-package view.components
+package view.states
 
 import kotlinx.css.Color
 import kotlinx.css.color
@@ -13,6 +13,7 @@ import react.fc
 import styled.css
 import styled.styledP
 import view.ViewProps
+import view.components.GameBoard
 
 val PlayingGame = fc<ViewProps> { props ->
     // either repeatedly assign a new state to this variable or force the component to rerender manually

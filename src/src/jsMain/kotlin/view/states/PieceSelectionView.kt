@@ -1,4 +1,4 @@
-package view.components
+package view.states
 
 import kotlinx.html.js.onClickFunction
 import model.GamePiece

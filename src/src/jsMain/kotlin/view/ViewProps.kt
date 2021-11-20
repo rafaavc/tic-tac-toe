@@ -1,7 +1,7 @@
 package view
 
 import react.Props
-import state.GameState
+import controller.GameState
 
 external interface ViewProps : Props {
     var gameState: GameState
