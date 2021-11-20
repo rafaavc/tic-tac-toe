@@ -31,6 +31,8 @@ class PlayingGameState(gameModel: GameModel, setGameState: StateSetter<GameState
         return PlayingGameState(gameModel!!, setGameState, false)
     }
 
+    override fun getLastPlay(): Position? = gameModel!!.lastPlay
+
     override fun clickSquare(player: GamePlayer, squarePosition: Position): GameState? {
         if (!gameModel!!.makePlay(player, squarePosition)) return null
 

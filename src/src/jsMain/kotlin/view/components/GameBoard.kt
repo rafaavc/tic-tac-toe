@@ -9,7 +9,8 @@ import view.ViewProps
 external interface GameBoardProps : ViewProps {
     var getOnClickFunction: ((Int, Int) -> ((Event) -> Unit))?
     var canClick: ((Int, Int) -> Boolean)?
-    var highlightedPieces: Set<Position>?
+    var winningPieces: Set<Position>?
+    var lastPlay: Position?
 }
 
 val GameBoard = fc<GameBoardProps> { props ->
@@ -25,7 +26,8 @@ val GameBoard = fc<GameBoardProps> { props ->
                         piece = gamePiece
                         onClickFunction = props.getOnClickFunction?.run { this(x, y) } ?: {}
                         canClick = props.canClick?.run { this(x, y) } ?: false
-                        highlighted = props.highlightedPieces != null && Position(x, y) in props.highlightedPieces!!
+                        won = props.winningPieces != null && Position(x, y) in props.winningPieces!!
+                        lastPlay = Position(x, y) == props.lastPlay
                     }
                 }
             }

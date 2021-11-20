@@ -6,7 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 class GameModel(val gameBoard: Array<Array<GamePiece>>, val humanGamePiece: GamePiece,
                 private val boardSize: Int = 10) {
+
     private val machineGamePiece = if (humanGamePiece == GamePiece.X) GamePiece.O else GamePiece.X
+    var lastPlay: Position? = null
 
     constructor(humanGamePiece: GamePiece, boardSize: Int = 10)
         : this(Array(boardSize) {
@@ -47,6 +49,7 @@ class GameModel(val gameBoard: Array<Array<GamePiece>>, val humanGamePiece: Game
         val gamePiece = getPlayerPiece(player)
 
         gameBoard[position.y][position.x] = gamePiece
+        lastPlay = position
 
         return true
     }

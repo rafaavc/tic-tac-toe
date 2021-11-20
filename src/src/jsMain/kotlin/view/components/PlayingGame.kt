@@ -67,6 +67,7 @@ val PlayingGame = fc<ViewProps> { props ->
     child(GameBoard) {
         attrs {
             getOnClickFunction = makePlay
+            lastPlay = gameState.getLastPlay()
             this.canClick = canClick
             this.gameState = gameState
         }

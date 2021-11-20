@@ -22,7 +22,8 @@ abstract class GameState(val gameModel: GameModel?, val gameView: FC<ViewProps>,
     open fun clickSquare(player: GamePlayer, squarePosition: Position): GameState? = null
     open fun isGameOver(): Boolean = false
     open fun getGameOverType(): GameOverType = GameOverType.NOT_OVER
-    open fun getHighlightedPieces(): Set<Position>? = null
+    open fun getWinningPieces(): Set<Position>? = null
+    open fun getLastPlay(): Position? = null
     open fun choosePlayer(piece: GamePiece) { nothingToDo() }
     open fun play() { nothingToDo() }
     open fun pause() { nothingToDo() }

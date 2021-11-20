@@ -12,5 +12,5 @@ import view.components.GameOver
 class GameOverGameState(gameModel: GameModel, setGameState: StateSetter<GameState?>, private val gameOverCheckResult: GameOverCheckResult) : GameState(gameModel, GameOver, setGameState) {
     override fun isGameOver(): Boolean = true
     override fun getGameOverType(): GameOverType = gameOverCheckResult.type
-    override fun getHighlightedPieces(): Set<Position>? = gameOverCheckResult.winningPieces
+    override fun getWinningPieces(): Set<Position>? = gameOverCheckResult.winningPieces
 }
