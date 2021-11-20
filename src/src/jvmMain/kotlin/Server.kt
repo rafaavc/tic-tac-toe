@@ -1,7 +1,5 @@
 import ai.MCTSRobot
-import ai.MiniMaxRobot
 import ai.Robot
-import ai.SequentialRobot
 import model.GameModel
 import io.ktor.application.*
 import io.ktor.features.*
