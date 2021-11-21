@@ -3,22 +3,21 @@ package view.states
 import kotlinx.html.js.onClickFunction
 import react.dom.attrs
 import react.dom.button
+import react.dom.p
 import react.fc
 import view.ViewProps
 
-val PauseMenuView = fc<ViewProps> { props ->
+val SettingsView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
-    button {
-        attrs {
-            onClickFunction = { gameState.play() }
-        }
-        +"Resume game"
+    p {
+        +"Settings"
     }
+
     button {
         attrs {
             onClickFunction = { gameState.quit() }
         }
-        +"Quit game"
+        +"Go back"
     }
 }

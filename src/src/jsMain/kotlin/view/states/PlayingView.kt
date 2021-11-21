@@ -15,7 +15,7 @@ import styled.styledP
 import view.ViewProps
 import view.components.GameBoard
 
-val PlayingGame = fc<ViewProps> { props ->
+val PlayingGameView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
     if (gameState.model == null) error("The game model is not set in the current playing state!")

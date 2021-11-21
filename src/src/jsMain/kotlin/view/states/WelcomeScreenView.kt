@@ -6,7 +6,7 @@ import react.dom.button
 import react.fc
 import view.ViewProps
 
-val WelcomeScreen = fc<ViewProps> { props ->
+val WelcomeScreenView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
     button {
@@ -14,5 +14,12 @@ val WelcomeScreen = fc<ViewProps> { props ->
             onClickFunction = { _ -> gameState.play() }
         }
         +"Play"
+    }
+
+    button {
+        attrs {
+            onClickFunction = { _ -> gameState.settings() }
+        }
+        +"Settings"
     }
 }

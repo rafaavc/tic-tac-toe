@@ -7,7 +7,7 @@ import react.dom.button
 import react.fc
 import view.ViewProps
 
-val PieceSelection = fc<ViewProps> { props ->
+val PieceSelectionView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
     button {

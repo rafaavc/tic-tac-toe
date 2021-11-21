@@ -9,7 +9,7 @@ import react.fc
 import view.ViewProps
 import view.components.GameBoard
 
-val GameOver = fc<ViewProps> { props ->
+val GameOverView = fc<ViewProps> { props ->
     val gameState = props.gameState as GameOverState
 
     button {

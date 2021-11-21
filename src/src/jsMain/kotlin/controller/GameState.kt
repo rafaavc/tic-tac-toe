@@ -29,5 +29,6 @@ abstract class GameState(
     open fun choosePlayer(piece: GamePiece) { nothingToDo() }
     open fun play() { nothingToDo() }
     open fun pause() { nothingToDo() }
+    open fun settings() { nothingToDo() }
     open fun isGameOver(): Boolean = false
 }

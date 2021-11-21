@@ -5,12 +5,12 @@ import controller.move.HvMStrategy
 import model.GameModel
 import model.GamePiece
 import react.StateSetter
-import view.states.PieceSelection
+import view.states.PieceSelectionView
 
 class PieceSelectionState(
     setGameState: StateSetter<GameState?>,
     setWaitingForServer: StateSetter<Boolean>
-) : GameState(null, PieceSelection, setGameState, setWaitingForServer) {
+) : GameState(null, PieceSelectionView, setGameState, setWaitingForServer) {
 
     override fun choosePlayer(piece: GamePiece) {
         val model = GameModel(piece)

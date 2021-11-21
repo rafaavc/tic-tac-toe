@@ -8,7 +8,7 @@ import model.GamePiece
 import model.GamePlayer
 import model.utilities.Position
 import react.StateSetter
-import view.states.PlayingGame
+import view.states.PlayingGameView
 
 class PlayingState(
     model: GameModel,
@@ -16,7 +16,7 @@ class PlayingState(
     setWaitingForServer: StateSetter<Boolean>,
     private val moveStrategy: MoveStrategy,
     isBeginning: Boolean = true,
-) : GameState(model, PlayingGame, setGameState, setWaitingForServer) {
+) : GameState(model, PlayingGameView, setGameState, setWaitingForServer) {
 
     init {
         if (isBeginning && model.player1GamePiece == GamePiece.O)
