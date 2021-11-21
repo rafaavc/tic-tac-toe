@@ -56,9 +56,9 @@ class MCTSNode(
         if (numberOfVisits == 0) return Double.MAX_VALUE // ~infinity
 
         val left = numberOfWins.toDouble() / numberOfVisits.toDouble()
-        val right = (parent as MCTSNode).numberOfVisits.toDouble() / numberOfVisits.toDouble()
+        val right = ln((parent as MCTSNode).numberOfVisits.toDouble()) / numberOfVisits.toDouble()
 
-        return left + 1.4142 * sqrt(ln(right))
+        return left + 1.4142 * sqrt(right)
     }
 
 }
