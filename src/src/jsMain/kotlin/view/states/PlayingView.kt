@@ -1,17 +1,14 @@
 package view.states
 
-import kotlinx.css.Color
-import kotlinx.css.color
-import kotlinx.html.js.onClickFunction
 import model.GamePlayer
 import model.utilities.Position
 import org.w3c.dom.events.Event
-import react.dom.attrs
-import react.dom.button
-import react.dom.p
+import react.createElement
 import react.fc
-import styled.css
-import styled.styledP
+import rsuite.PauseIcon
+import rsuite.RSuiteIconButton
+import rsuite.RSuiteLoader
+import rsuite.RSuiteSize
 import view.ViewProps
 import view.components.GameBoard
 
@@ -30,24 +27,21 @@ val PlayingGameView = fc<ViewProps> { props ->
     }
 
     if (!props.waitingForServer)
-        button {
+        child(RSuiteIconButton) {
             attrs {
-                onClickFunction = { _ -> gameState.pause() }
+                size = RSuiteSize.LG
+                circle = true
+                icon = createElement(PauseIcon)
+                onClick = { gameState.pause() }
             }
-            +"Pause"
         }
 
-    if (props.waitingForServer) {
-        p {
-            +"Waiting..."
+    if (props.waitingForServer)
+        child(RSuiteLoader) {
+            attrs {
+                content = "The opponent is thinking..."
+            }
         }
-    }
-    else styledP {
-        +"."
-        css {
-            color = Color.transparent
-        }
-    }
 
     child(GameBoard) {
         attrs {

@@ -1,24 +1,25 @@
 package view.states
 
-import kotlinx.html.js.onClickFunction
 import model.GamePiece
-import react.dom.attrs
-import react.dom.button
 import react.fc
+import rsuite.RSuiteButton
+import rsuite.RSuiteSize
 import view.ViewProps
 
 val PieceSelectionView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
-    button {
+    child(RSuiteButton) {
         attrs {
-            onClickFunction = { _ -> gameState.choosePlayer(GamePiece.X) }
+            size = RSuiteSize.LG
+            onClick = { gameState.choosePlayer(GamePiece.X) }
         }
         +"Player X"
     }
-    button {
+    child(RSuiteButton) {
         attrs {
-            onClickFunction = { _ -> gameState.choosePlayer(GamePiece.O) }
+            size = RSuiteSize.LG
+            onClick = { gameState.choosePlayer(GamePiece.O) }
         }
         +"Player O"
     }

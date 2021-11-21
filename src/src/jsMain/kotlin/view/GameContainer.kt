@@ -6,7 +6,7 @@ import controller.states.WelcomeScreenState
 
 val GameContainer = fc<Props> {
     val (gameState, setGameState) = useState<GameState?>(null)
-    val (waitingForServer, setWaitingForServer) = useState<Boolean>(false)
+    val (waitingForServer, setWaitingForServer) = useState(false)
     useEffectOnce {
         setGameState(WelcomeScreenState(setGameState, setWaitingForServer))
     }

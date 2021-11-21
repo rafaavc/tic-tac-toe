@@ -30,7 +30,7 @@ val GameBoardSquare = fc<GameBoardSquareProps> { props ->
             cursor = if (props.canClick) Cursor.pointer else Cursor.auto
             userSelect = UserSelect.none
             color = if (props.won) Color.red else {
-                if (props.lastPlay) Color.green else Color.black
+                if (props.lastPlay) Color.green else Color.inherit
             }
         }
         if (props.canClick) {

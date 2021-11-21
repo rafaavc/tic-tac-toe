@@ -1,25 +1,27 @@
 package view.states
 
-import kotlinx.html.js.onClickFunction
-import react.dom.attrs
-import react.dom.button
+import react.createElement
 import react.fc
 import view.ViewProps
+import rsuite.*
 
 val WelcomeScreenView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
-    button {
+    child(RSuiteButton) {
         attrs {
-            onClickFunction = { _ -> gameState.play() }
+            size = RSuiteSize.LG
+            onClick = { gameState.play() }
         }
         +"Play"
     }
 
-    button {
+    child(RSuiteIconButton) {
         attrs {
-            onClickFunction = { _ -> gameState.settings() }
+            size = RSuiteSize.LG
+            onClick = { gameState.settings() }
+            icon = createElement(SettingsIcon)
+            circle = true
         }
-        +"Settings"
     }
 }

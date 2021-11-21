@@ -24,6 +24,7 @@ fun HTML.index() {
             id = "root"
         }
         script(src = "/static/TicTacToe.js") {}
+        link(rel = "stylesheet", href = "/static/rsuite.min.css") {}
     }
 }
 

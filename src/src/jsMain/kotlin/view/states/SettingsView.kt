@@ -1,10 +1,9 @@
 package view.states
 
-import kotlinx.html.js.onClickFunction
-import react.dom.attrs
-import react.dom.button
 import react.dom.p
 import react.fc
+import rsuite.RSuiteButton
+import rsuite.RSuiteSize
 import view.ViewProps
 
 val SettingsView = fc<ViewProps> { props ->
@@ -14,9 +13,10 @@ val SettingsView = fc<ViewProps> { props ->
         +"Settings"
     }
 
-    button {
+    child(RSuiteButton) {
         attrs {
-            onClickFunction = { gameState.quit() }
+            size = RSuiteSize.LG
+            onClick = { gameState.quit() }
         }
         +"Go back"
     }
