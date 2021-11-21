@@ -24,6 +24,7 @@ abstract class GameState(
         setGameState(WelcomeScreenState(setGameState, setWaitingForServer))
     }
 
+    open fun getCurrentPlayerPiece(): GamePiece = GamePiece.EMPTY
     open fun canMakeMove(squarePosition: Position): Boolean = false
     open fun makeMove(player: GamePlayer, squarePosition: Position): GameState? = null
     open fun choosePlayer(piece: GamePiece) { nothingToDo() }

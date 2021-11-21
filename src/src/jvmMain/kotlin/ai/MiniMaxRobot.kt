@@ -11,7 +11,7 @@ class MiniMaxRobot : Robot {
 
     override fun getNextPlay(gameModel: GameModel): Position {
         val res = minimax(Node(gameModel, GameOverCheckResult(GameOverType.NOT_OVER), true), -infinity, infinity, true)
-        return res.first ?: error("got null position :/")
+        return res.first ?: error("Got null next play.")
     }
 
     private fun minimax(node: Node, alpha: Int, beta: Int, isMaximizer: Boolean, depth: Int = 0): Pair<Position?, Int> {

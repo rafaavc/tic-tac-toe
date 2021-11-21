@@ -11,7 +11,7 @@ import view.components.GameBar
 import view.components.GameBoard
 import view.defaultButtonSize
 
-val PauseMenuView = fc<ViewProps> { props ->
+val PauseView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
     child(GameBar) {

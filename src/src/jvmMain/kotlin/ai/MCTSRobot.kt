@@ -23,7 +23,8 @@ class MCTSRobot : Robot {
 
             var explorationNode = promisingNode
             if (!promisingNode.isGameOver()) {
-                if (promisingNode.getChildren().isEmpty()) error("Node is not game over but its children list is empty!")
+                if (promisingNode.getChildren().isEmpty())
+                    error("Node is not game over but its children list is empty!")
                 explorationNode = promisingNode.getChildren().random() as MCTSNode
             }
 

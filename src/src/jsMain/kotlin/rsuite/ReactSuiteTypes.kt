@@ -1,6 +1,6 @@
 package rsuite
 
-enum class RSuiteSize(val size: String) {
+enum class RSuiteSize(val value: String) {
     XS("xs"),
     SM("sm"),
     MD("md"),

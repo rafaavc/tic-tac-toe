@@ -1,6 +1,7 @@
 package view.components
 
 import kotlinx.css.opacity
+import model.GamePiece
 import model.utilities.Position
 import org.w3c.dom.events.Event
 import react.*
@@ -15,6 +16,7 @@ external interface GameBoardProps : ViewProps {
     var winningPieces: Set<Position>?
     var lastPlay: Position?
     var inactive: Boolean?
+    var currentPlayerPiece: GamePiece
 }
 
 val GameBoard = fc<GameBoardProps> { props ->
@@ -38,6 +40,7 @@ val GameBoard = fc<GameBoardProps> { props ->
                             canClick = props.canClick?.run { this(x, y) } ?: false
                             won = props.winningPieces != null && Position(x, y) in props.winningPieces!!
                             lastPlay = Position(x, y) == props.lastPlay
+                            currentPlayerPiece = props.currentPlayerPiece
                         }
                     }
                 }

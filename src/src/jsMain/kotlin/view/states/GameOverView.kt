@@ -14,6 +14,10 @@ val GameOverView = fc<ViewProps> { props ->
 
 
     child(GameBar) {
+        p {
+            +"${gameState.gameOverCheckResult.type}"
+        }
+
         child(RSuiteButton) {
             attrs {
                 onClick = { gameState.quit() }
@@ -21,10 +25,6 @@ val GameOverView = fc<ViewProps> { props ->
             }
             +"Quit game"
         }
-    }
-
-    p {
-        +"${gameState.gameOverCheckResult.type}"
     }
 
     child(GameBoard) {

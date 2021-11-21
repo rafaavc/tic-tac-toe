@@ -1,12 +1,14 @@
 package controller.move
 
 import controller.GameState
+import controller.states.ErrorState
 import getMachinePlay
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.GameModel
 import model.GameOverCheckResult
+import model.GamePiece
 import model.GamePlayer
 import model.utilities.Position
 import react.StateSetter
@@ -22,8 +24,12 @@ class HvMStrategy(
     private fun makeMachineMove(model: GameModel, getNextGameState: (GameOverCheckResult) -> GameState) {
         setWaitingForServer(true)
         scope.launch {
-            if (model.isEmpty) delay(500)
-            makeMove(GamePlayer.PLAYER2, getMachinePlay(model), getNextGameState)
+            try {
+                if (model.isEmpty) delay(500)
+                makeMove(GamePlayer.PLAYER2, getMachinePlay(model), getNextGameState)
+            } catch (e: Throwable) {
+                setGameState(ErrorState(setGameState, setWaitingForServer, e.message))
+            }
             setWaitingForServer(false)
         }
     }
@@ -45,6 +51,10 @@ class HvMStrategy(
         }
     }
 
-    override fun makeFirstMove(getNextGameState: (GameOverCheckResult) -> GameState)
-        = makeMachineMove(model, getNextGameState)
+    override fun makeFirstMove(getNextGameState: (GameOverCheckResult) -> GameState) {
+        if (model.isEmpty && model.player1GamePiece == GamePiece.O)
+            makeMachineMove(model, getNextGameState)
+    }
+
+    override fun getCurrentPlayerPiece(): GamePiece = model.player1GamePiece  // because there will never be a player2 turn
 }

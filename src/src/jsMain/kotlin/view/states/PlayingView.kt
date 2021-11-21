@@ -17,13 +17,11 @@ import view.components.GameBar
 import view.components.GameBoard
 import view.defaultButtonSize
 
-val PlayingGameView = fc<ViewProps> { props ->
+val PlayingView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
-    if (gameState.model == null) error("The game model is not set in the current playing state!")
-
     val makePlay: (Int, Int) -> ((Event) -> Unit) = { x, y -> {
-            gameState.makeMove(GamePlayer.PLAYER1, Position(x, y)) ?: error("Invalid play!")
+            gameState.makeMove(GamePlayer.PLAYER1, Position(x, y)) ?: error("Invalid play.")
         }
     }
 
@@ -46,7 +44,8 @@ val PlayingGameView = fc<ViewProps> { props ->
     child(GameBoard) {
         attrs {
             getOnClickFunction = makePlay
-            lastPlay = gameState.model.lastPlay
+            lastPlay = gameState.model!!.lastPlay
+            currentPlayerPiece = gameState.getCurrentPlayerPiece()
             this.canClick = canClick
             this.gameState = gameState
         }

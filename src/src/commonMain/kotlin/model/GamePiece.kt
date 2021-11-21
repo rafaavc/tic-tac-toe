@@ -1,7 +1,7 @@
 package model
 
-enum class GamePiece {
-    EMPTY,
-    X,
-    O
+enum class GamePiece(val value: String) {
+    EMPTY(""),
+    X("X"),
+    O("O")
 }

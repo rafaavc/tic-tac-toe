@@ -13,7 +13,7 @@ external val RSuiteButton: ComponentClass<RSuiteButtonProps>
 external val RSuiteIconButton: ComponentClass<RSuiteIconButtonProps>
 
 external interface RSuiteButtonProps : Props {
-    var size: RSuiteSize
+    var size: String
     var onClick: (Event) -> Unit
     var disabled: Boolean
 }

@@ -9,7 +9,7 @@ import styled.css
 import styled.styledDiv
 import styled.styledH1
 
-val defaultButtonSize = RSuiteSize.LG
+val defaultButtonSize = RSuiteSize.MD.value
 
 val GameContainer = fc<Props> {
     val (gameState, setGameState) = useState<GameState?>(null)
