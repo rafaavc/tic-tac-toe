@@ -15,6 +15,7 @@ external val RSuiteIconButton: ComponentClass<RSuiteIconButtonProps>
 external interface RSuiteButtonProps : Props {
     var size: RSuiteSize
     var onClick: (Event) -> Unit
+    var disabled: Boolean
 }
 
 external interface RSuiteIconButtonProps : RSuiteButtonProps {

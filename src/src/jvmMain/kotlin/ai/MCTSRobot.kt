@@ -9,6 +9,8 @@ import model.utilities.Position
 
 class MCTSRobot : Robot {
     override fun getNextPlay(gameModel: GameModel): Position {
+        if (gameModel.isEmpty) return gameModel.getPossibleMoves(false).random()
+
         val root = MCTSNode(gameModel, GameOverCheckResult(GameOverType.NOT_OVER), true)
         root.expand()
 

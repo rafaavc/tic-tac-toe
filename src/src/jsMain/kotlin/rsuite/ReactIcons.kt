@@ -10,3 +10,6 @@ external val SettingsIcon: ComponentClass<Props>
 
 @JsName("FaPause")
 external val PauseIcon: ComponentClass<Props>
+
+@JsName("FaPlay")
+external val PlayIcon: ComponentClass<Props>

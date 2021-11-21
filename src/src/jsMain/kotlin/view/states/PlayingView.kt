@@ -1,5 +1,6 @@
 package view.states
 
+import kotlinx.css.*
 import model.GamePlayer
 import model.utilities.Position
 import org.w3c.dom.events.Event
@@ -8,9 +9,13 @@ import react.fc
 import rsuite.PauseIcon
 import rsuite.RSuiteIconButton
 import rsuite.RSuiteLoader
-import rsuite.RSuiteSize
+import styled.css
+import styled.styledSpan
 import view.ViewProps
+import view.components.CustomIcon
+import view.components.GameBar
 import view.components.GameBoard
+import view.defaultButtonSize
 
 val PlayingGameView = fc<ViewProps> { props ->
     val gameState = props.gameState
@@ -26,22 +31,17 @@ val PlayingGameView = fc<ViewProps> { props ->
         !props.waitingForServer && gameState.canMakeMove(Position(x, y))
     }
 
-    if (!props.waitingForServer)
+    child(GameBar) {
         child(RSuiteIconButton) {
             attrs {
-                size = RSuiteSize.LG
+                size = defaultButtonSize
                 circle = true
-                icon = createElement(PauseIcon)
+                icon = createElement(CustomIcon(PauseIcon))
                 onClick = { gameState.pause() }
+                disabled = props.waitingForServer
             }
         }
-
-    if (props.waitingForServer)
-        child(RSuiteLoader) {
-            attrs {
-                content = "The opponent is thinking..."
-            }
-        }
+    }
 
     child(GameBoard) {
         attrs {
@@ -51,4 +51,22 @@ val PlayingGameView = fc<ViewProps> { props ->
             this.gameState = gameState
         }
     }
+
+    child(GameBar) {
+        styledSpan {
+            css {
+                visibility = if (props.waitingForServer) Visibility.inherit else Visibility.hidden
+            }
+            child(RSuiteLoader) {
+                attrs {
+                    content = "Waiting for opponent..."
+                }
+            }
+        }
+        attrs {
+            marginBottom = "0"
+            marginTop = "2rem"
+        }
+    }
+
 }

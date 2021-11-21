@@ -3,24 +3,27 @@ package view.states
 import model.GamePiece
 import react.fc
 import rsuite.RSuiteButton
-import rsuite.RSuiteSize
 import view.ViewProps
+import view.components.GameBar
+import view.defaultButtonSize
 
 val PieceSelectionView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
-    child(RSuiteButton) {
-        attrs {
-            size = RSuiteSize.LG
-            onClick = { gameState.choosePlayer(GamePiece.X) }
+    child(GameBar) {
+        child(RSuiteButton) {
+            attrs {
+                size = defaultButtonSize
+                onClick = { gameState.choosePlayer(GamePiece.X) }
+            }
+            +"Player X"
         }
-        +"Player X"
-    }
-    child(RSuiteButton) {
-        attrs {
-            size = RSuiteSize.LG
-            onClick = { gameState.choosePlayer(GamePiece.O) }
+        child(RSuiteButton) {
+            attrs {
+                size = defaultButtonSize
+                onClick = { gameState.choosePlayer(GamePiece.O) }
+            }
+            +"Player O"
         }
-        +"Player O"
     }
 }

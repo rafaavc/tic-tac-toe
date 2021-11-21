@@ -3,6 +3,7 @@ package controller.move
 import controller.GameState
 import getMachinePlay
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.GameModel
 import model.GameOverCheckResult
@@ -21,6 +22,7 @@ class HvMStrategy(
     private fun makeMachineMove(model: GameModel, getNextGameState: (GameOverCheckResult) -> GameState) {
         setWaitingForServer(true)
         scope.launch {
+            if (model.isEmpty) delay(500)
             makeMove(GamePlayer.PLAYER2, getMachinePlay(model), getNextGameState)
             setWaitingForServer(false)
         }

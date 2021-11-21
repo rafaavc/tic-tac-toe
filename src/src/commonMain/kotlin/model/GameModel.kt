@@ -11,6 +11,7 @@ class GameModel(
 ) {
     private val player2GamePiece = if (player1GamePiece == GamePiece.X) GamePiece.O else GamePiece.X
     var lastPlay: Position? = null
+    var isEmpty = true
 
     constructor(player1GamePiece: GamePiece, boardSize: Int = 10)
         : this(Array(boardSize) {
@@ -83,6 +84,8 @@ class GameModel(
 
         gameBoard[position.y][position.x] = gamePiece
         lastPlay = position
+
+        if (isEmpty) isEmpty = false
 
         return true
     }

@@ -1,25 +1,42 @@
 package view.states
 
+import react.createElement
 import react.fc
+import rsuite.PlayIcon
 import rsuite.RSuiteButton
-import rsuite.RSuiteSize
+import rsuite.RSuiteIconButton
 import view.ViewProps
+import view.components.CustomIcon
+import view.components.GameBar
+import view.components.GameBoard
+import view.defaultButtonSize
 
 val PauseMenuView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
-    child(RSuiteButton) {
-        attrs {
-            size = RSuiteSize.LG
-            onClick = { gameState.play() }
+    child(GameBar) {
+        child(RSuiteIconButton) {
+            attrs {
+                size = defaultButtonSize
+                circle = true
+                icon = createElement(CustomIcon(PlayIcon))
+                onClick = { gameState.play() }
+            }
         }
-        +"Resume game"
+        child(RSuiteButton) {
+            attrs {
+                size = defaultButtonSize
+                onClick = { gameState.quit() }
+            }
+            +"Quit game"
+        }
     }
-    child(RSuiteButton) {
+
+    child(GameBoard) {
         attrs {
-            size = RSuiteSize.LG
-            onClick = { gameState.quit() }
+            inactive = true
+            lastPlay = gameState.model!!.lastPlay
+            this.gameState = gameState
         }
-        +"Quit game"
     }
 }

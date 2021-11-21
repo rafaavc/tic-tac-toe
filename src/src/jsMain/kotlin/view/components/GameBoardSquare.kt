@@ -7,8 +7,28 @@ import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.*
 import react.dom.attrs
+import styled.StyleSheet
 import styled.css
 import styled.styledDiv
+
+object GameBoardSquareStyles : StyleSheet("GameBoardSquareStyles", isStatic = true) {
+    val general by css {
+        display = Display.inlineBlock
+        textAlign = TextAlign.center
+        verticalAlign = VerticalAlign.middle
+
+        width = LinearDimension("2.7rem")
+        height = LinearDimension("2.7rem")
+
+        userSelect = UserSelect.none
+
+        fontFamily = FontFamily.monospace.toString()
+        fontSize = LinearDimension("2rem")
+
+        border = "1px solid #27354d"
+        backgroundColor = Color("#131821")
+    }
+}
 
 external interface GameBoardSquareProps : Props {
     var piece: GamePiece
@@ -20,18 +40,14 @@ external interface GameBoardSquareProps : Props {
 
 val GameBoardSquare = fc<GameBoardSquareProps> { props ->
     styledDiv {
-        +"${if (props.piece == GamePiece.EMPTY) '_' else props.piece}"
+        +"${if (props.piece == GamePiece.EMPTY) ' ' else props.piece}"
 
         css {
-            display = Display.inlineBlock
-            fontFamily = FontFamily.monospace.toString()
-            fontSize = LinearDimension("2rem")
-            marginRight = LinearDimension("1rem")
             cursor = if (props.canClick) Cursor.pointer else Cursor.auto
-            userSelect = UserSelect.none
             color = if (props.won) Color.red else {
                 if (props.lastPlay) Color.green else Color.inherit
             }
+            +GameBoardSquareStyles.general
         }
         if (props.canClick) {
             attrs {
