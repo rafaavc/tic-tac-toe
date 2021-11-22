@@ -1,20 +1,22 @@
 package controller.states
 
 import controller.GameState
+import controller.GameStateFactory
 import react.StateSetter
 import view.states.WelcomeScreenView
 
 class WelcomeScreenState(
     setGameState: StateSetter<GameState?>,
-    setWaitingForServer: StateSetter<Boolean>
-) : GameState(null, WelcomeScreenView, setGameState, setWaitingForServer) {
+    setWaitingForServer: StateSetter<Boolean>,
+    gameStateFactory: GameStateFactory
+) : GameState(null, WelcomeScreenView, setGameState, setWaitingForServer, gameStateFactory) {
 
     override fun play() {
-        setGameState(PieceSelectionState(setGameState, setWaitingForServer))
+        setGameState(gameStateFactory.createPieceSelectionState())
     }
 
     override fun settings() {
-        setGameState(SettingsState(setGameState, setWaitingForServer))
+        setGameState(gameStateFactory.createSettingsState())
     }
 
 }

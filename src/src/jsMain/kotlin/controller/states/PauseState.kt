@@ -1,20 +1,21 @@
 package controller.states
 
 import controller.GameState
+import controller.GameStateFactory
 import controller.move.MoveStrategy
 import model.GameModel
 import react.StateSetter
 import view.states.PauseView
 
 class PauseState(
-    model: GameModel,
+    private val gameState: GameState,
     setGameState: StateSetter<GameState?>,
     setWaitingForServer: StateSetter<Boolean>,
-    private val moveStrategy: MoveStrategy,
-) : GameState(model, PauseView, setGameState, setWaitingForServer) {
+    gameStateFactory: GameStateFactory
+) : GameState(gameState.model, PauseView, setGameState, setWaitingForServer, gameStateFactory) {
 
     override fun play() {
-        setGameState(PlayingState(model!!, setGameState, setWaitingForServer, moveStrategy))
+        setGameState(gameState)
     }
 
 }

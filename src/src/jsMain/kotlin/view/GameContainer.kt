@@ -2,6 +2,7 @@ package view
 
 import react.*
 import controller.GameState
+import controller.GameStateFactory
 import controller.states.WelcomeScreenState
 import kotlinx.css.*
 import rsuite.RSuiteSize
@@ -16,7 +17,7 @@ val GameContainer = fc<Props> {
     val (waitingForServer, setWaitingForServer) = useState(false)
 
     useEffectOnce {
-        setGameState(WelcomeScreenState(setGameState, setWaitingForServer))
+        setGameState(GameStateFactory(setGameState, setWaitingForServer).createWelcomeScreenState())
     }
 
     if (gameState == null) return@fc

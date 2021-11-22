@@ -1,6 +1,7 @@
 package controller.move
 
 import controller.GameState
+import controller.GameStateFactory
 import controller.states.ErrorState
 import getMachinePlay
 import kotlinx.coroutines.MainScope
@@ -18,7 +19,8 @@ private val scope = MainScope()
 class HvMStrategy(
     model: GameModel,
     private val setGameState: StateSetter<GameState?>,
-    private val setWaitingForServer: StateSetter<Boolean>
+    private val setWaitingForServer: StateSetter<Boolean>,
+    private val gameStateFactory: GameStateFactory
 ) : MoveStrategy(model) {
 
     private fun makeMachineMove(model: GameModel, getNextGameState: (GameOverCheckResult) -> GameState) {
@@ -28,7 +30,7 @@ class HvMStrategy(
                 if (model.isEmpty) delay(500)
                 makeMove(GamePlayer.PLAYER2, getMachinePlay(model), getNextGameState)
             } catch (e: Throwable) {
-                setGameState(ErrorState(setGameState, setWaitingForServer, e.message))
+                setGameState(gameStateFactory.createErrorState(e.message))
             }
             setWaitingForServer(false)
         }

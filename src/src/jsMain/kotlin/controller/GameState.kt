@@ -13,7 +13,8 @@ abstract class GameState(
     val model: GameModel?,
     val gameView: FC<ViewProps>,
     protected val setGameState: StateSetter<GameState?>,
-    protected val setWaitingForServer: StateSetter<Boolean>
+    protected val setWaitingForServer: StateSetter<Boolean>,
+    protected val gameStateFactory: GameStateFactory
 ) {
 
     private fun nothingToDo() {
@@ -21,7 +22,7 @@ abstract class GameState(
     }
 
     fun quit() {
-        setGameState(WelcomeScreenState(setGameState, setWaitingForServer))
+        setGameState(gameStateFactory.createWelcomeScreenState())
     }
 
     open fun getCurrentPlayerPiece(): GamePiece = GamePiece.EMPTY

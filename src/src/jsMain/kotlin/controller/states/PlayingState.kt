@@ -1,6 +1,7 @@
 package controller.states
 
 import controller.GameState
+import controller.GameStateFactory
 import controller.move.MoveStrategy
 import model.GameModel
 import model.GameOverCheckResult
@@ -14,8 +15,9 @@ class PlayingState(
     model: GameModel,
     setGameState: StateSetter<GameState?>,
     setWaitingForServer: StateSetter<Boolean>,
+    gameStateFactory: GameStateFactory,
     private val moveStrategy: MoveStrategy
-) : GameState(model, PlayingView, setGameState, setWaitingForServer) {
+) : GameState(model, PlayingView, setGameState, setWaitingForServer, gameStateFactory) {
 
     init {
         moveStrategy.makeFirstMove(this::getNextGameState)
@@ -23,7 +25,7 @@ class PlayingState(
 
     private fun getNextGameState(gameOverCheckResult: GameOverCheckResult): GameState {
         if (gameOverCheckResult.isOver())
-            return GameOverState(model!!, setGameState, setWaitingForServer, gameOverCheckResult)
+            return gameStateFactory.createGameOverState(model!!, gameOverCheckResult)
         return this
     }
 
@@ -37,6 +39,6 @@ class PlayingState(
         = moveStrategy.makeMove(player, squarePosition, this::getNextGameState)
 
     override fun pause() {
-        setGameState(PauseState(model!!, setGameState, setWaitingForServer, moveStrategy))
+        setGameState(gameStateFactory.createPauseState(this))
     }
 }
