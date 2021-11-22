@@ -1,7 +1,11 @@
 package view
 
 import kotlinx.css.*
+import rsuite.RSuiteSize
 import view.components.GameBoardSquareStyles
+
+val defaultButtonSize = RSuiteSize.MD.value
+const val marginMedium = "1.5rem"
 
 val globalStyles = CssBuilder(allowClasses = false).apply {
     body {
@@ -23,5 +27,9 @@ val globalStyles = CssBuilder(allowClasses = false).apply {
     }
     "div:last-child > .$cssClass:last-child" {
         borderBottomRightRadius = radius
+    }
+
+    ".rs-btn:not(:last-of-type)" {
+        marginRight = LinearDimension(marginMedium)
     }
 }

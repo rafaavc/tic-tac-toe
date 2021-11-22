@@ -34,13 +34,16 @@ val GameBoard = fc<GameBoardProps> { props ->
                 for ((x, gamePiece) in line.withIndex()) {
                     child(GameBoardSquare) {
                         key = x.toString() + y.toString()
+
                         attrs {
                             piece = gamePiece
-                            onClickFunction = props.getOnClickFunction?.run { this(x, y) } ?: {}
-                            canClick = props.canClick?.run { this(x, y) } ?: false
+                            currentPlayerPiece = props.currentPlayerPiece
+
                             won = props.winningPieces != null && Position(x, y) in props.winningPieces!!
                             lastPlay = Position(x, y) == props.lastPlay
-                            currentPlayerPiece = props.currentPlayerPiece
+
+                            onClickFunction = props.getOnClickFunction?.run { this(x, y) } ?: {}
+                            canClick = props.canClick?.run { this(x, y) } ?: false
                         }
                     }
                 }

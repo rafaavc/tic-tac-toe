@@ -1,6 +1,5 @@
 package controller
 
-import controller.states.WelcomeScreenState
 import model.GameModel
 import model.GamePiece
 import model.GamePlayer
@@ -28,9 +27,7 @@ abstract class GameState(
     open fun getCurrentPlayerPiece(): GamePiece = GamePiece.EMPTY
     open fun canMakeMove(squarePosition: Position): Boolean = false
     open fun makeMove(player: GamePlayer, squarePosition: Position): GameState? = null
-    open fun choosePlayer(piece: GamePiece) { nothingToDo() }
     open fun play() { nothingToDo() }
     open fun pause() { nothingToDo() }
-    open fun settings() { nothingToDo() }
     open fun isGameOver(): Boolean = false
 }

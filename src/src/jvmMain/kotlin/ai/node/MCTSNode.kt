@@ -15,8 +15,8 @@ class MCTSNode(
     move: Position? = null
 ) : Node(gameModel, gameOverCheckResult, isMaximizer, parent, move) {
 
-    private var numberOfWins = 0
-    private var numberOfVisits = 0
+    private var numberOfWins: Long = 0
+    private var numberOfVisits: Long = 0
 
     fun incrementWins(gameOverType: GameOverType) {
         if (gameOverType == GameOverType.PLAYER2_VICTORY) numberOfWins++
@@ -53,7 +53,7 @@ class MCTSNode(
     }
 
     private fun calculateUCT(): Double {
-        if (numberOfVisits == 0) return Double.MAX_VALUE // ~infinity
+        if (numberOfVisits == 0L) return Double.MAX_VALUE // ~infinity
 
         val left = numberOfWins.toDouble() / numberOfVisits.toDouble()
         val right = ln((parent as MCTSNode).numberOfVisits.toDouble()) / numberOfVisits.toDouble()

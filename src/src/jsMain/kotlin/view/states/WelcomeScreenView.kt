@@ -1,32 +1,82 @@
 package view.states
 
-import react.createElement
+import controller.states.WelcomeScreenState
+import model.GamePiece
 import react.fc
+import react.useState
 import view.ViewProps
 import rsuite.*
-import view.components.CustomIcon
-import view.components.GameBar
+import view.components.Container
+import view.components.blueColor
 import view.defaultButtonSize
 
 val WelcomeScreenView = fc<ViewProps> { props ->
-    val gameState = props.gameState
+    val gameState = props.gameState as WelcomeScreenState
 
-    child(GameBar) {
-        child(RSuiteButton) {
-            attrs {
-                size = defaultButtonSize
-                onClick = { gameState.play() }
-            }
-            +"Play"
+    var player1Piece by useState(gameState.settings.player1Piece)
+    var boardSize by useState(gameState.settings.boardSize)
+    var target by useState(gameState.settings.target)
+    val timeToThink by useState(gameState.settings.timeToThink)
+
+
+    child(Container) {
+        attrs {
+            flex = false
         }
 
-        child(RSuiteIconButton) {
+        for (piece in arrayOf(GamePiece.O, GamePiece.X))
+            child(RSuiteButton) {
+                attrs {
+                    size = defaultButtonSize
+                    onClick = { player1Piece = piece }
+                    active = player1Piece == piece
+                }
+                +piece.value
+            }
+    }
+
+    child(Container) {
+        attrs {
+            flex = false
+        }
+
+        child(RSuiteSlider) {
             attrs {
-                size = defaultButtonSize
-                onClick = { gameState.settings() }
-                icon = createElement(CustomIcon(SettingsIcon))
-                circle = true
+                defaultValue = boardSize.toDouble()
+                min = 3.0
+                max = 10.0
+                step = 1.0
+                onChange = { value -> boardSize = value.toInt() }
             }
         }
+    }
+
+    child(Container) {
+        attrs {
+            flex = false
+        }
+
+        child(RSuiteSlider) {
+            attrs {
+                defaultValue = target.toDouble()
+                min = 3.0
+                max = 10.0
+                step = 1.0
+                onChange = { value -> target = value.toInt() }
+            }
+        }
+    }
+
+    child(RSuiteButton) {
+        attrs {
+            size = defaultButtonSize
+            color = "blue"
+            appearance = "primary"
+            onClick = {
+                gameState.settings.set(player1Piece, boardSize, target, timeToThink)
+                gameState.play()
+            }
+        }
+        +"Play"
     }
 }

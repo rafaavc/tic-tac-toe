@@ -1,33 +1,32 @@
 package controller
 
-import controller.move.MoveStrategy
+import controller.move.HvMStrategy
 import controller.states.*
 import model.GameModel
 import model.GameOverCheckResult
 import react.StateSetter
 
 class GameStateFactory(
+    private val settings: GameSettings,
     private val setGameState: StateSetter<GameState?>,
     private val setWaitingForServer: StateSetter<Boolean>
 ) {
     fun createWelcomeScreenState(): GameState
-        = WelcomeScreenState(setGameState, setWaitingForServer, this)
+        = WelcomeScreenState(setGameState, setWaitingForServer, this, settings)
 
-    fun createPieceSelectionState(): GameState
-        = PieceSelectionState(setGameState, setWaitingForServer, this)
-
-    fun createSettingsState(): GameState
-        = SettingsState(setGameState, setWaitingForServer, this)
-
-    fun createPlayingState(model: GameModel, moveStrategy: MoveStrategy): GameState
-        = PlayingState(model, setGameState, setWaitingForServer, this, moveStrategy)
+    fun createPlayingState(): GameState {
+        val model = GameModel(settings.player1Piece, settings.boardSize, settings.target)
+        // TODO move moveStrategy to settings and implement abstract factory
+        val moveStrategy = HvMStrategy(model, setGameState, setWaitingForServer, this)
+        return PlayingState(model, setGameState, setWaitingForServer, this, moveStrategy)
+    }
 
     fun createPauseState(gameState: GameState): GameState
-        = PauseState(gameState, setGameState, setWaitingForServer, this)
+            = PauseState(gameState, setGameState, setWaitingForServer, this)
 
     fun createErrorState(errorMessage: String?): GameState
-        = ErrorState(setGameState, setWaitingForServer, this, errorMessage)
+            = ErrorState(setGameState, setWaitingForServer, this, errorMessage)
 
     fun createGameOverState(model: GameModel, gameOverCheckResult: GameOverCheckResult): GameState
-        = GameOverState(model, setGameState, setWaitingForServer, this, gameOverCheckResult)
+            = GameOverState(model, setGameState, setWaitingForServer, this, gameOverCheckResult)
 }

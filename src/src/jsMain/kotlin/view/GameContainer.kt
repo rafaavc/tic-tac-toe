@@ -1,23 +1,20 @@
 package view
 
+import controller.GameSettings
 import react.*
 import controller.GameState
 import controller.GameStateFactory
-import controller.states.WelcomeScreenState
 import kotlinx.css.*
-import rsuite.RSuiteSize
 import styled.css
 import styled.styledDiv
 import styled.styledH1
-
-val defaultButtonSize = RSuiteSize.MD.value
 
 val GameContainer = fc<Props> {
     val (gameState, setGameState) = useState<GameState?>(null)
     val (waitingForServer, setWaitingForServer) = useState(false)
 
     useEffectOnce {
-        setGameState(GameStateFactory(setGameState, setWaitingForServer).createWelcomeScreenState())
+        setGameState(GameStateFactory(GameSettings(), setGameState, setWaitingForServer).createWelcomeScreenState())
     }
 
     if (gameState == null) return@fc
@@ -31,13 +28,15 @@ val GameContainer = fc<Props> {
 
         styledH1 {
             css {
-                marginBottom = LinearDimension("1.5rem")
+                marginBottom = LinearDimension(marginMedium)
                 fontSize = LinearDimension("3rem")
             }
             +"TicTacToe"
         }
+
         child(gameState.gameView) {
             attrs {
+                this.settings = settings
                 this.gameState = gameState
                 this.waitingForServer = waitingForServer
             }

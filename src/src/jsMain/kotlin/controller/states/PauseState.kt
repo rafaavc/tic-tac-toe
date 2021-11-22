@@ -2,8 +2,6 @@ package controller.states
 
 import controller.GameState
 import controller.GameStateFactory
-import controller.move.MoveStrategy
-import model.GameModel
 import react.StateSetter
 import view.states.PauseView
 

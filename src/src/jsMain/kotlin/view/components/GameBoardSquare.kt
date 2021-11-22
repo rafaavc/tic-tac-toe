@@ -14,8 +14,11 @@ import styled.css
 import styled.styledDiv
 import styled.styledSpan
 
+// TODO remove and put in dedicated constants file
 private const val tileBackgroundColor = "#131821"
 private const val tileBorderColor = "#27354d"
+const val blueColor = "#087ad1" // the value of the "blue" react suite color
+const val greenColor = "rgb(23, 135, 17)"
 
 object GameBoardSquareStyles : StyleSheet("GameBoardSquareStyles", isStatic = true) {
     val general by css {
@@ -38,8 +41,8 @@ object GameBoardSquareStyles : StyleSheet("GameBoardSquareStyles", isStatic = tr
 
 private fun getPieceColor(won: Boolean, isLastPlay: Boolean, pieceRepresentation: String?): Color {
     if (pieceRepresentation != null) return Color(tileBorderColor)
-    if (won) return Color("rgb(23, 135, 17)")
-    if (isLastPlay) return Color("#0c6ba2")
+    if (won) return Color(greenColor)
+    if (isLastPlay) return Color(blueColor)
     return Color.inherit
 }
 

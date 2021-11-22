@@ -5,7 +5,7 @@ import react.dom.p
 import react.fc
 import rsuite.RSuiteButton
 import view.ViewProps
-import view.components.GameBar
+import view.components.Container
 import view.components.GameBoard
 import view.defaultButtonSize
 
@@ -13,7 +13,7 @@ val GameOverView = fc<ViewProps> { props ->
     val gameState = props.gameState as GameOverState
 
 
-    child(GameBar) {
+    child(Container) {
         p {
             +"${gameState.gameOverCheckResult.type}"
         }

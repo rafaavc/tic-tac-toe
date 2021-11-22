@@ -16,6 +16,9 @@ external interface RSuiteButtonProps : Props {
     var size: String
     var onClick: (Event) -> Unit
     var disabled: Boolean
+    var active: Boolean
+    var color: String
+    var appearance: String
 }
 
 external interface RSuiteIconButtonProps : RSuiteButtonProps {
@@ -35,4 +38,15 @@ external val RSuiteLoader: ComponentClass<RSuiteLoaderProps>
 
 external interface RSuiteLoaderProps : Props {
     var content: Any
+}
+
+@JsName("Slider")
+external val RSuiteSlider: ComponentClass<RSuiteSliderProps>
+
+external interface RSuiteSliderProps : Props {
+    var defaultValue: Double
+    var min: Double
+    var step: Double
+    var max: Double
+    var onChange: (value: Double) -> Unit
 }

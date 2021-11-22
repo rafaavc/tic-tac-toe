@@ -11,6 +11,7 @@ import styled.css
 import styled.styledP
 import view.ViewProps
 import view.defaultButtonSize
+import view.marginMedium
 
 val ErrorView = fc<ViewProps> { props ->
     val gameState = props.gameState as ErrorState
@@ -18,7 +19,7 @@ val ErrorView = fc<ViewProps> { props ->
     styledP {
         css {
             color = Color("rgb(210, 48, 12)")
-            marginBottom = LinearDimension("1rem")
+            marginBottom = LinearDimension(marginMedium)
         }
         +(if (gameState.errorMessage != null) "Error: ${gameState.errorMessage}." else "Critical error.")
     }

@@ -7,14 +7,14 @@ import rsuite.RSuiteButton
 import rsuite.RSuiteIconButton
 import view.ViewProps
 import view.components.CustomIcon
-import view.components.GameBar
+import view.components.Container
 import view.components.GameBoard
 import view.defaultButtonSize
 
 val PauseView = fc<ViewProps> { props ->
     val gameState = props.gameState
 
-    child(GameBar) {
+    child(Container) {
         child(RSuiteIconButton) {
             attrs {
                 size = defaultButtonSize

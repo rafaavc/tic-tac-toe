@@ -7,16 +7,17 @@ import kotlinx.serialization.Serializable
 class GameModel(
     val gameBoard: Array<Array<GamePiece>>,
     val player1GamePiece: GamePiece,
-    private val boardSize: Int = 10
+    private val boardSize: Int,
+    private val target: Int
 ) {
     private val player2GamePiece = if (player1GamePiece == GamePiece.X) GamePiece.O else GamePiece.X
     var lastPlay: Position? = null
     var isEmpty = true
 
-    constructor(player1GamePiece: GamePiece, boardSize: Int = 10)
+    constructor(player1GamePiece: GamePiece, boardSize: Int = 10, target: Int = 5)
         : this(Array(boardSize) {
             Array(boardSize) { GamePiece.EMPTY }
-        }, player1GamePiece, boardSize)
+        }, player1GamePiece, boardSize, target)
 
     private fun copyGameBoard(): Array<Array<GamePiece>> {
         return Array(boardSize) { y ->
@@ -26,7 +27,7 @@ class GameModel(
         }
     }
 
-    fun copy(): GameModel = GameModel(copyGameBoard(), player1GamePiece)
+    fun copy(): GameModel = GameModel(copyGameBoard(), player1GamePiece, boardSize, target)
 
     private fun isInsideBoard(position: Position) = position.x in 0 until boardSize && position.y in 0 until boardSize
 
@@ -100,7 +101,7 @@ class GameModel(
         return GameOverCheckResult(GameOverType.DRAW)
     }
 
-    fun checkGameOver(player: GamePlayer, position: Position, getWinningPieces: Boolean = false, target: Int = 5): GameOverCheckResult {
+    fun checkGameOver(player: GamePlayer, position: Position, getWinningPieces: Boolean = false): GameOverCheckResult {
         val gamePiece = getPlayerPiece(player)
 
         val winningPieces = (if (getWinningPieces) mutableMapOf<Direction, MutableSet<Position>>() else null)?.also {

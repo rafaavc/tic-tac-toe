@@ -13,7 +13,7 @@ import styled.css
 import styled.styledSpan
 import view.ViewProps
 import view.components.CustomIcon
-import view.components.GameBar
+import view.components.Container
 import view.components.GameBoard
 import view.defaultButtonSize
 
@@ -29,7 +29,7 @@ val PlayingView = fc<ViewProps> { props ->
         !props.waitingForServer && gameState.canMakeMove(Position(x, y))
     }
 
-    child(GameBar) {
+    child(Container) {
         child(RSuiteIconButton) {
             attrs {
                 size = defaultButtonSize
@@ -51,7 +51,7 @@ val PlayingView = fc<ViewProps> { props ->
         }
     }
 
-    child(GameBar) {
+    child(Container) {
         styledSpan {
             css {
                 visibility = if (props.waitingForServer) Visibility.inherit else Visibility.hidden
