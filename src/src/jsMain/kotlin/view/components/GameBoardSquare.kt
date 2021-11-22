@@ -13,12 +13,7 @@ import styled.StyleSheet
 import styled.css
 import styled.styledDiv
 import styled.styledSpan
-
-// TODO remove and put in dedicated constants file
-private const val tileBackgroundColor = "#131821"
-private const val tileBorderColor = "#27354d"
-const val blueColor = "#087ad1" // the value of the "blue" react suite color
-const val greenColor = "rgb(23, 135, 17)"
+import view.*
 
 object GameBoardSquareStyles : StyleSheet("GameBoardSquareStyles", isStatic = true) {
     val general by css {
@@ -39,9 +34,9 @@ object GameBoardSquareStyles : StyleSheet("GameBoardSquareStyles", isStatic = tr
     }
 }
 
-private fun getPieceColor(won: Boolean, isLastPlay: Boolean, pieceRepresentation: String?): Color {
+private fun getPieceColor(won: Boolean, showSuccess: Boolean, isLastPlay: Boolean, pieceRepresentation: String?): Color {
     if (pieceRepresentation != null) return Color(tileBorderColor)
-    if (won) return Color(greenColor)
+    if (won) return if (showSuccess) Color(greenColor) else Color(redColor)
     if (isLastPlay) return Color(blueColor)
     return Color.inherit
 }
@@ -51,6 +46,7 @@ external interface GameBoardSquareProps : Props {
     var onClickFunction: (Event) -> Unit
     var canClick: Boolean
     var won: Boolean
+    var showSuccess: Boolean?
     var lastPlay: Boolean
     var currentPlayerPiece: GamePiece
 }
@@ -66,7 +62,7 @@ val GameBoardSquare = fc<GameBoardSquareProps> { props ->
     styledDiv {
         styledSpan {
             css {
-                color = getPieceColor(props.won, props.lastPlay, pieceRepresentation)
+                color = getPieceColor(props.won, props.showSuccess == true, props.lastPlay, pieceRepresentation)
                 opacity = if (pieceRepresentation != null) 0.7 else 1
             }
             +(pieceRepresentation ?: props.piece.value)

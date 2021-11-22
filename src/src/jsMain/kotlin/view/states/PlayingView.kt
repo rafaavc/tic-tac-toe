@@ -16,6 +16,7 @@ import view.components.CustomIcon
 import view.components.Container
 import view.components.GameBoard
 import view.defaultButtonSize
+import view.marginMedium
 
 val PlayingView = fc<ViewProps> { props ->
     val gameState = props.gameState
@@ -64,7 +65,7 @@ val PlayingView = fc<ViewProps> { props ->
         }
         attrs {
             marginBottom = "0"
-            marginTop = "2rem"
+            marginTop = marginMedium
         }
     }
 

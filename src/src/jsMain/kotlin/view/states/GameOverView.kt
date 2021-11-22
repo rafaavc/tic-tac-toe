@@ -15,7 +15,7 @@ val GameOverView = fc<ViewProps> { props ->
 
     child(Container) {
         p {
-            +"${gameState.gameOverCheckResult.type}"
+            +"${gameState.gameOverCheckResult.gameOverMessage ?: gameState.gameOverCheckResult.type}"
         }
 
         child(RSuiteButton) {
@@ -31,6 +31,7 @@ val GameOverView = fc<ViewProps> { props ->
         attrs {
             this.gameState = gameState
             winningPieces = gameState.gameOverCheckResult.winningPieces
+            showSuccess = gameState.gameOverCheckResult.showSuccess
         }
     }
 }

@@ -44,7 +44,7 @@ external interface RSuiteLoaderProps : Props {
 external val RSuiteSlider: ComponentClass<RSuiteSliderProps>
 
 external interface RSuiteSliderProps : Props {
-    var defaultValue: Double
+    var value: Double
     var min: Double
     var step: Double
     var max: Double

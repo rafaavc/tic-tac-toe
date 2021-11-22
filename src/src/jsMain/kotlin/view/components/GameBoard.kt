@@ -14,6 +14,7 @@ external interface GameBoardProps : ViewProps {
     var getOnClickFunction: ((Int, Int) -> ((Event) -> Unit))?
     var canClick: ((Int, Int) -> Boolean)?
     var winningPieces: Set<Position>?
+    var showSuccess: Boolean?
     var lastPlay: Position?
     var inactive: Boolean?
     var currentPlayerPiece: GamePiece
@@ -40,6 +41,7 @@ val GameBoard = fc<GameBoardProps> { props ->
                             currentPlayerPiece = props.currentPlayerPiece
 
                             won = props.winningPieces != null && Position(x, y) in props.winningPieces!!
+                            showSuccess = props.showSuccess
                             lastPlay = Position(x, y) == props.lastPlay
 
                             onClickFunction = props.getOnClickFunction?.run { this(x, y) } ?: {}

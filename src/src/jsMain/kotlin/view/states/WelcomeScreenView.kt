@@ -7,8 +7,10 @@ import react.useState
 import view.ViewProps
 import rsuite.*
 import view.components.Container
-import view.components.blueColor
+import view.components.LabelField
 import view.defaultButtonSize
+import view.marginHuge
+import view.marginLarge
 
 val WelcomeScreenView = fc<ViewProps> { props ->
     val gameState = props.gameState as WelcomeScreenState
@@ -18,51 +20,74 @@ val WelcomeScreenView = fc<ViewProps> { props ->
     var target by useState(gameState.settings.target)
     val timeToThink by useState(gameState.settings.timeToThink)
 
-
     child(Container) {
         attrs {
             flex = false
+            marginBottom = marginLarge
+            marginTop = marginHuge
         }
 
-        for (piece in arrayOf(GamePiece.O, GamePiece.X))
-            child(RSuiteButton) {
-                attrs {
-                    size = defaultButtonSize
-                    onClick = { player1Piece = piece }
-                    active = player1Piece == piece
+        child(LabelField) {
+            attrs {
+                label = "Player ($player1Piece)"
+            }
+            for (piece in arrayOf(GamePiece.O, GamePiece.X))
+                child(RSuiteButton) {
+                    attrs {
+                        size = defaultButtonSize
+                        onClick = { player1Piece = piece }
+                        active = player1Piece == piece
+                    }
+                    +piece.value
                 }
-                +piece.value
-            }
-    }
-
-    child(Container) {
-        attrs {
-            flex = false
-        }
-
-        child(RSuiteSlider) {
-            attrs {
-                defaultValue = boardSize.toDouble()
-                min = 3.0
-                max = 10.0
-                step = 1.0
-                onChange = { value -> boardSize = value.toInt() }
-            }
         }
     }
 
     child(Container) {
         attrs {
             flex = false
+            marginBottom = marginLarge
         }
 
-        child(RSuiteSlider) {
+        child(LabelField) {
             attrs {
-                defaultValue = target.toDouble()
-                min = 3.0
-                max = 10.0
-                step = 1.0
-                onChange = { value -> target = value.toInt() }
+                label = "Board size (${boardSize}x$boardSize)"
+            }
+
+            child(RSuiteSlider) {
+                attrs {
+                    value = boardSize.toDouble()
+                    min = 3.0
+                    max = 10.0
+                    step = 1.0
+                    onChange = { value ->
+                        boardSize = value.toInt()
+                        if (target > value) target = value.toInt()
+                    }
+                }
+            }
+        }
+    }
+
+    child(Container) {
+        attrs {
+            flex = false
+            marginBottom = marginLarge
+        }
+
+        child(LabelField) {
+            attrs {
+                label = "How many pieces in a row to win ($target)"
+            }
+
+            child(RSuiteSlider) {
+                attrs {
+                    value = target.toDouble()
+                    min = 3.0
+                    max = boardSize.toDouble()
+                    step = 1.0
+                    onChange = { value -> target = value.toInt() }
+                }
             }
         }
     }

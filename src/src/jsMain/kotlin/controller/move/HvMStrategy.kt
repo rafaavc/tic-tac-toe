@@ -2,15 +2,11 @@ package controller.move
 
 import controller.GameState
 import controller.GameStateFactory
-import controller.states.ErrorState
 import getMachinePlay
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import model.GameModel
-import model.GameOverCheckResult
-import model.GamePiece
-import model.GamePlayer
+import model.*
 import model.utilities.Position
 import react.StateSetter
 
@@ -22,6 +18,18 @@ class HvMStrategy(
     private val setWaitingForServer: StateSetter<Boolean>,
     private val gameStateFactory: GameStateFactory
 ) : MoveStrategy(model) {
+
+    private fun getGameOverMessage(gameOverCheckResult: GameOverCheckResult): Pair<String?, Boolean> {
+        if (gameOverCheckResult.type == GameOverType.PLAYER1_VICTORY) return Pair("You won :)", true)
+        if (gameOverCheckResult.type == GameOverType.PLAYER2_VICTORY) return Pair("You lost :(", false)
+        return Pair(null, false)
+    }
+
+    private fun fillGameOverCheckResult(gameOverCheckResult: GameOverCheckResult) {
+        val gameOverMessage = getGameOverMessage(gameOverCheckResult)
+        gameOverCheckResult.gameOverMessage = gameOverMessage.first
+        gameOverCheckResult.showSuccess = gameOverMessage.second
+    }
 
     private fun makeMachineMove(model: GameModel, getNextGameState: (GameOverCheckResult) -> GameState) {
         setWaitingForServer(true)
@@ -44,6 +52,7 @@ class HvMStrategy(
         if (!model.makePlay(player, squarePosition)) return null
 
         val gameOverCheckResult = model.checkGameOver(player, squarePosition, getWinningPieces = true)
+        fillGameOverCheckResult(gameOverCheckResult)
 
         return getNextGameState(gameOverCheckResult).also {
             setGameState(it)
