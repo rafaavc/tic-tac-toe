@@ -9,8 +9,8 @@ import model.utilities.Position
 class MiniMaxRobot : Robot {
     private val infinity = 10000
 
-    override fun getNextPlay(gameModel: GameModel): Position {
-        val res = minimax(Node(gameModel, GameOverCheckResult(GameOverType.NOT_OVER), true), -infinity, infinity, true)
+    override fun getNextPlay(model: GameModel): Position {
+        val res = minimax(Node(model, GameOverCheckResult(GameOverType.NOT_OVER), true), -infinity, infinity, true)
         return res.first ?: error("Got null next play.")
     }
 

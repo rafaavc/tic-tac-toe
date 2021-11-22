@@ -51,7 +51,7 @@ class HvMStrategy(
 
         if (!model.makePlay(player, squarePosition)) return null
 
-        val gameOverCheckResult = model.checkGameOver(player, squarePosition, getWinningPieces = true)
+        val gameOverCheckResult = controller.checkGameOver(player, squarePosition, getWinningPieces = true)
         fillGameOverCheckResult(gameOverCheckResult)
 
         return getNextGameState(gameOverCheckResult).also {

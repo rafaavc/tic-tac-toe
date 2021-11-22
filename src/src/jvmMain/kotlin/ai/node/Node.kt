@@ -1,10 +1,11 @@
 package ai.node
 
+import controller.GameController
 import model.*
 import model.utilities.Position
 
 open class Node(
-    val gameModel: GameModel,
+    val model: GameModel,
     private val gameOverCheckResult: GameOverCheckResult,
     val isMaximizer: Boolean,
     val parent: Node? = null,
@@ -12,17 +13,18 @@ open class Node(
 ) {
     private val score = 10
     protected val nodeChildren = mutableListOf<Node>()
+    protected val controller = GameController(model)
     protected var expanded = false
 
     protected fun executePossibleMoves(): List<Triple<GameModel, GameOverCheckResult, Position>> {
         val player = if (isMaximizer) GamePlayer.PLAYER2 else GamePlayer.PLAYER1
-        val possibleMoves = gameModel.getPossibleMoves(true)
+        val possibleMoves = controller.getPossibleMoves(true)
         val newModels = mutableListOf<Triple<GameModel, GameOverCheckResult, Position>>()
 
         for (move in possibleMoves) {
-            val model = gameModel.copy()
+            val model = model.copy()
             model.makePlay(player, move)
-            newModels.add(Triple(model, model.checkGameOver(player, move), move))
+            newModels.add(Triple(model, controller.checkGameOver(player, move), move))
         }
 
         return newModels

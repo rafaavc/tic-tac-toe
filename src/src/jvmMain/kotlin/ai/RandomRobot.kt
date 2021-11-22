@@ -1,11 +1,12 @@
 package ai
 
+import controller.GameController
 import model.GameModel
 import model.utilities.Position
 
 class RandomRobot: Robot {
-    override fun getNextPlay(gameModel: GameModel): Position {
+    override fun getNextPlay(model: GameModel): Position {
         Thread.sleep(500)
-        return gameModel.getPossibleMoves().random()
+        return GameController(model).getPossibleMoves().random()
     }
 }

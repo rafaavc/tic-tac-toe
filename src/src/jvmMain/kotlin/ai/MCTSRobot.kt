@@ -1,6 +1,7 @@
 package ai
 
 import ai.node.MCTSNode
+import controller.GameController
 import model.GameModel
 import model.GameOverCheckResult
 import model.GameOverType
@@ -8,10 +9,11 @@ import model.GamePlayer
 import model.utilities.Position
 
 class MCTSRobot : Robot {
-    override fun getNextPlay(gameModel: GameModel): Position {
-        if (gameModel.isEmpty) return gameModel.getPossibleMoves(false).random()
+    override fun getNextPlay(model: GameModel): Position {
+        // TODO return only moves from a smaller scope in the center of the board
+        if (model.isEmpty) return GameController(model).getPossibleMoves(false).random()
 
-        val root = MCTSNode(gameModel, GameOverCheckResult(GameOverType.NOT_OVER), true)
+        val root = MCTSNode(model, GameOverCheckResult(GameOverType.NOT_OVER), true)
         root.expand()
 
         var count = 0
@@ -42,13 +44,15 @@ class MCTSRobot : Robot {
         = if (isMaximizer) GamePlayer.PLAYER2 else GamePlayer.PLAYER1
 
     private fun simulateRandomPlayout(node: MCTSNode): GameOverCheckResult {
-        val gameModel = node.gameModel.copy()
+        val model = node.model.copy()
+        val controller = GameController(model)
         var isMaximizer = node.isMaximizer
+
         var gameOverCheckResult = if (node.move != null) {
-            gameModel.checkGameOver(getPlayerFromIsMaximizer(!isMaximizer /* we want the player from the last node */), node.move)
+            controller.checkGameOver(getPlayerFromIsMaximizer(!isMaximizer /* we want the player from the last node */), node.move)
         } else GameOverCheckResult(GameOverType.NOT_OVER)
 
-        val possibleMoves = gameModel.getPossibleMoves()
+        val possibleMoves = controller.getPossibleMoves()
 
         while (!gameOverCheckResult.isOver()) {
             val move = possibleMoves.random()
@@ -56,9 +60,9 @@ class MCTSRobot : Robot {
 
             val player = getPlayerFromIsMaximizer(isMaximizer)
 
-            gameModel.makePlay(player, move, false)
+            model.makePlay(player, move, false)
 
-            gameOverCheckResult = gameModel.checkGameOver(player, move)
+            gameOverCheckResult = controller.checkGameOver(player, move)
             isMaximizer = !isMaximizer
         }
 
