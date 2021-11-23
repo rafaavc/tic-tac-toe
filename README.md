@@ -4,9 +4,7 @@
 - [Design Decisions](#design-decisions)
 - [Machine Plays](#machine-plays)
 
-<!-- <img src="docs/demo.gif" width="600" /> -->
-
-![Game Demo](docs/demo.gif)
+[[click here to see a demonstration gif]](docs/demo.gif)
 
 Project developed by Rafael Cristino ([GitHub](https://github.com/rafaavc))
 
@@ -16,15 +14,11 @@ This project was developed using JDK 15.0.1. To run it (among other ways) you ca
 
 By accessing the link you are presented by an immediately ready-to-play game against the computer, as specified in the project proposal.
 
-<!-- <img src="docs/beginning.png" width="400" /> -->
-
-![Playing game screen](docs/beginning.png)
+[[click here to see the beginning screen]](docs/beginning.png)
 
 Here you can play the game or pause / quit to main menu. If you go to the main menu this is what you'll see:
 
-<!-- <img src="docs/mainMenu.png" width="400" /> -->
-
-![Main menu](docs/mainMenu.png)
+[[click here to see the main menu]](docs/mainMenu.png)
 
 Here you can choose whether to play against a machine or another human. In both of these options you can customize the size of the game and the target length of the line of pieces to win, but if you choose to play against the machine you can also choose the piece you want (X starts first) and the amount of time that the machine has to find a move. Then, you can start a game by pressing the play button.
 
