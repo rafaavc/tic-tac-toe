@@ -1,8 +1,6 @@
 package controller
 
-import controller.move.HvHStrategy
 import controller.move.MoveStrategy
-import controller.move.factory.MoveStrategyFactory
 import controller.states.*
 import model.GameModel
 import react.StateSetter

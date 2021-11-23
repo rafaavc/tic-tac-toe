@@ -3,7 +3,6 @@ package controller.move.factory
 import controller.GameSettings
 import controller.GameState
 import controller.GameStateFactory
-import controller.move.HvHStrategy
 import controller.move.HvMStrategy
 import controller.move.MoveStrategy
 import model.GameModel
