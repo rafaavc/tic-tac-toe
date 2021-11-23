@@ -34,6 +34,37 @@ class MCTSRobot(private val time: Int) : Robot {
             else if (count == model.target - 2 && count >= 2 && emptyPositions!!.size == 2) defenseCandidate = emptyPositions.random()
         }
 
+        val root = mCTSLoop(model)
+
+        val mCTSCandidate = root.getChildren().maxByOrNull { (it as MCTSNode).getScore() }!!.move!!
+
+        if (defenseCandidate != null) {
+            if (getLineSizeByMove(model, mCTSCandidate) > lineToDefendSize) { // the MCTS suggested move makes my line bigger, so I can confidently do it
+                println("Using MCTS candidate even though had defense candidate")
+                return mCTSCandidate
+            }
+
+            println("Using defense candidate")
+            return defenseCandidate
+        }
+        println("Using MCTS candidate")
+        return mCTSCandidate
+    }
+
+    private fun getLineSizeByMove(gameModel: GameModel, move: Position): Int {
+        // assumes that the model that is passed is not game over
+        val player = getPlayerFromIsMaximizer(true)
+        val model = gameModel.copy()
+        model.makePlay(player, move, false)
+
+        val (_, count) = LineChecker(model).checkLineAtPosition(move, model.target)
+        return count
+    }
+
+    private fun getPlayerFromIsMaximizer(isMaximizer: Boolean): GamePlayer
+        = if (isMaximizer) GamePlayer.PLAYER2 else GamePlayer.PLAYER1
+
+    private fun mCTSLoop(model: GameModel): MCTSNode {
         val root = MCTSNode(model, GameOverCheckResult(GameOverType.NOT_OVER), true)
         root.expand()
 
@@ -57,34 +88,8 @@ class MCTSRobot(private val time: Int) : Robot {
         }
 
         println("$count iterations")
-
-        val mctsCandidate = root.getChildren().maxByOrNull { (it as MCTSNode).getScore() }!!.move!!
-
-        if (defenseCandidate != null) {
-            if (getLineSizeByMove(model, mctsCandidate) > lineToDefendSize) { // the MCTS suggested move makes my line bigger, so I can confidently do it
-                println("Using MCTS candidate even though had defense candidate")
-                return mctsCandidate
-            }
-
-            println("Using defense candidate")
-            return defenseCandidate
-        }
-        println("Using MCTS candidate")
-        return mctsCandidate
+        return root
     }
-
-    private fun getLineSizeByMove(gameModel: GameModel, move: Position): Int {
-        // assumes that the model that is passed is not game over
-        val player = getPlayerFromIsMaximizer(true)
-        val model = gameModel.copy()
-        model.makePlay(player, move, false)
-
-        val (_, count) = LineChecker(model).checkLineAtPosition(move, model.target)
-        return count
-    }
-
-    private fun getPlayerFromIsMaximizer(isMaximizer: Boolean): GamePlayer
-        = if (isMaximizer) GamePlayer.PLAYER2 else GamePlayer.PLAYER1
 
     private fun simulateRandomPlayout(node: MCTSNode): GameOverCheckResult {
         val model = node.model.copy()
