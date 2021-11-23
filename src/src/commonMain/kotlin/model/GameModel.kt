@@ -10,7 +10,7 @@ class GameModel(
     val boardSize: Int,
     val target: Int
 ) {
-    private val player2GamePiece = if (player1GamePiece == GamePiece.X) GamePiece.O else GamePiece.X
+    val player2GamePiece = if (player1GamePiece == GamePiece.X) GamePiece.O else GamePiece.X
 
     var lastPlay: Position? = null
         private set

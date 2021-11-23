@@ -1,6 +1,8 @@
 package controller
 
-import controller.move.HvMStrategy
+import controller.move.HvHStrategy
+import controller.move.MoveStrategy
+import controller.move.factory.MoveStrategyFactory
 import controller.states.*
 import model.GameModel
 import react.StateSetter
@@ -15,8 +17,11 @@ class GameStateFactory(
 
     fun createPlayingState(): GameState {
         val model = GameModel(settings.player1Piece, settings.boardSize, settings.target)
-        // TODO move moveStrategy to settings and implement abstract factory
-        val moveStrategy = HvMStrategy(model, settings, setGameState, setWaitingForServer, this)
+        val moveStrategy = settings.moveStrategyFactory.createMoveStrategy(model, settings, setGameState, setWaitingForServer, this)
+        return PlayingState(model, setGameState, this, moveStrategy)
+    }
+
+    fun createPlayingState(model: GameModel, moveStrategy: MoveStrategy): GameState {
         return PlayingState(model, setGameState, this, moveStrategy)
     }
 

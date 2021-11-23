@@ -14,7 +14,7 @@ val GameContainer = fc<Props> {
     val (waitingForServer, setWaitingForServer) = useState(false)
 
     useEffectOnce {
-        setGameState(GameStateFactory(GameSettings(), setGameState, setWaitingForServer).createWelcomeScreenState())
+        setGameState(GameStateFactory(GameSettings(), setGameState, setWaitingForServer).createPlayingState())
     }
 
     if (gameState == null) return@fc

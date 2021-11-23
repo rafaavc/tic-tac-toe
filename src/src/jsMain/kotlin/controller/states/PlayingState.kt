@@ -25,7 +25,7 @@ class PlayingState(
     private fun getNextGameState(gameOverCheckResult: GameOverCheckResult): GameState {
         if (gameOverCheckResult.isOver())
             return gameStateFactory.createGameOverState(model!!, gameOverCheckResult)
-        return this
+        return gameStateFactory.createPlayingState(model!!, moveStrategy)
     }
 
     override fun getCurrentPlayerPiece(): GamePiece

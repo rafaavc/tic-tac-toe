@@ -15,6 +15,6 @@ abstract class MoveStrategy(protected val model: GameModel, protected val settin
     abstract fun canMakeMove(squarePosition: Position): Boolean
     abstract fun makeMove(player: GamePlayer, squarePosition: Position,
                           getNextGameState: (GameOverCheckResult) -> GameState): GameState?
-    abstract fun makeFirstMove(getNextGameState: (GameOverCheckResult) -> GameState)
+    open fun makeFirstMove(getNextGameState: (GameOverCheckResult) -> GameState) {}
     abstract fun getCurrentPlayerPiece(): GamePiece
 }

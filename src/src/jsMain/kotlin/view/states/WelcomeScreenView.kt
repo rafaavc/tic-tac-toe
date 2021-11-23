@@ -1,5 +1,7 @@
 package view.states
 
+import controller.move.factory.HvHStrategyFactory
+import controller.move.factory.HvMStrategyFactory
 import controller.states.WelcomeScreenState
 import view.externals.RSuiteButton
 import model.GamePiece
@@ -21,6 +23,7 @@ val WelcomeScreenView = fc<ViewProps> { props ->
     var boardSize by useState(gameState.settings.boardSize)
     var target by useState(gameState.settings.target)
     var timeToThink by useState(gameState.settings.timeToThink)
+    var moveStrategyFactory by useState(gameState.settings.moveStrategyFactory)
 
     child(Container) {
         attrs {
@@ -31,19 +34,55 @@ val WelcomeScreenView = fc<ViewProps> { props ->
 
         child(LabelField) {
             attrs {
-                label = "Player ($player1Piece)"
+                label = "Game mode (${if (moveStrategyFactory is HvHStrategyFactory) "HvH" else "HvM"})"
             }
-            for (piece in arrayOf(GamePiece.O, GamePiece.X))
-                child(RSuiteButton) {
-                    attrs {
-                        size = defaultButtonSize
-                        onClick = { player1Piece = piece }
-                        active = player1Piece == piece
+            child(RSuiteButton) {
+                attrs {
+                    size = defaultButtonSize
+                    onClick = {
+                        moveStrategyFactory = HvMStrategyFactory()
+                        player1Piece = GamePiece.O
                     }
-                    +piece.value
+                    active = moveStrategyFactory is HvMStrategyFactory
                 }
+                +"Human vs Machine"
+            }
+            child(RSuiteButton) {
+                attrs {
+                    size = defaultButtonSize
+                    onClick = {
+                        moveStrategyFactory = HvHStrategyFactory()
+                        player1Piece = GamePiece.X
+                    }
+                    active = moveStrategyFactory is HvHStrategyFactory
+                }
+                +"Human vs Human"
+            }
         }
     }
+
+    if (moveStrategyFactory is HvMStrategyFactory)
+        child(Container) {
+            attrs {
+                flex = false
+                marginBottom = marginLarge
+            }
+
+            child(LabelField) {
+                attrs {
+                    label = "Player ($player1Piece)"
+                }
+                for (piece in arrayOf(GamePiece.O, GamePiece.X))
+                    child(RSuiteButton) {
+                        attrs {
+                            size = defaultButtonSize
+                            onClick = { player1Piece = piece }
+                            active = player1Piece == piece
+                        }
+                        +piece.value
+                    }
+            }
+        }
 
     child(CustomSliderInput) {
         attrs {
@@ -70,16 +109,17 @@ val WelcomeScreenView = fc<ViewProps> { props ->
         }
     }
 
-    child(CustomSliderInput) {
-        attrs {
-            label = "Time for the opponent to think (${timeToThink}s)"
-            value = timeToThink
-            min = 0.5
-            max = 10.0
-            step = 0.5
-            onChange = { value -> timeToThink = value }
+    if (moveStrategyFactory is HvMStrategyFactory)
+        child(CustomSliderInput) {
+            attrs {
+                label = "Time for the opponent to think (${timeToThink}s)"
+                value = timeToThink
+                min = 0.5
+                max = 10.0
+                step = 0.5
+                onChange = { value -> timeToThink = value }
+            }
         }
-    }
 
     child(RSuiteButton) {
         attrs {
@@ -87,7 +127,7 @@ val WelcomeScreenView = fc<ViewProps> { props ->
             color = "blue"
             appearance = "primary"
             onClick = {
-                gameState.settings.set(player1Piece, boardSize, target, timeToThink)
+                gameState.settings.set(player1Piece, boardSize, target, timeToThink, moveStrategyFactory)
                 gameState.play()
             }
         }
