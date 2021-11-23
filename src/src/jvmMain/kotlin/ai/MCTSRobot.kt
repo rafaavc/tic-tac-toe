@@ -19,33 +19,19 @@ class MCTSRobot(private val time: Int) : Robot {
             return controller.getPossibleMoves(range).random()
         }
 
-        var defenseCandidate: Position? = null
-        var lineToDefendSize = 0
-
-        if (model.lastPlay != null) {
-            val (hasLine, count, _, emptyPositions) = controller.lineChecker.checkLineAtPosition(model.lastPlay!!, model.target - 1,
-                getLinePieces = true, getEmptyPositionsAfterLineEnds = true)
-
-            lineToDefendSize = count
-
-            // if it has a line that is 1 away from winning, then we could defend
-            if (hasLine && emptyPositions!!.size == 1) defenseCandidate = emptyPositions.first()
-            // if it has a line that is 2 away from winning and has two blank spaces on each side, then we may need to defend
-            else if (count == model.target - 2 && count >= 2 && emptyPositions!!.size == 2) defenseCandidate = emptyPositions.random()
-        }
+        val defenseCandidate = getDefenseCandidate(controller, model)  // the second element is the length of the line
 
         val root = mCTSLoop(model)
-
         val mCTSCandidate = root.getChildren().maxByOrNull { (it as MCTSNode).getScore() }!!.move!!
 
-        if (defenseCandidate != null) {
-            if (getLineSizeByMove(model, mCTSCandidate) > lineToDefendSize) { // the MCTS suggested move makes my line bigger, so I can confidently do it
+        if (defenseCandidate.first != null) {
+            if (getLineSizeByMove(model, mCTSCandidate) > defenseCandidate.second) { // the MCTS suggested move makes my line bigger, so I can confidently do it
                 println("Using MCTS candidate even though had defense candidate")
                 return mCTSCandidate
             }
 
             println("Using defense candidate")
-            return defenseCandidate
+            return defenseCandidate.first!!
         }
         println("Using MCTS candidate")
         return mCTSCandidate
@@ -124,5 +110,30 @@ class MCTSRobot(private val time: Int) : Robot {
             currentNode.incrementNumberOfVisits()
             currentNode = currentNode.parent as MCTSNode?
         }
+    }
+
+    private fun getDefenseCandidate(controller: GameController, model: GameModel): Pair<Position?, Int> {
+        if (model.lastPlay == null) return Pair(null, 0)
+
+        val (hasLine, count, _, emptyPositions) = controller.lineChecker.checkLineAtPosition(model.lastPlay!!, model.target - 1,
+            getLinePieces = true, getEmptyPositionsAfterLineEnds = true)
+
+        // if it has a line that is 1 away from winning, then we could defend
+        if (hasLine && emptyPositions!!.size == 1) return Pair(emptyPositions.first().first, count)
+
+        // if it has a line that is 2 away from winning and has two blank spaces on each side, then we may need to defend
+        else if (count == model.target - 2 && count >= 2 && emptyPositions!!.isNotEmpty()) {
+
+            for (positionPair in emptyPositions) {
+                // if there is a piece of the same type on the other side
+                if (positionPair.second) return Pair(positionPair.first, model.target - 1)
+            }
+
+            // if none of the pieces had another of the same type on the other side,
+            // and there are two free squares (if there's only one it is not urgent)
+            if (emptyPositions.size == 2) return Pair(emptyPositions.random().first, count)
+        }
+
+        return Pair(null, 0)
     }
 }

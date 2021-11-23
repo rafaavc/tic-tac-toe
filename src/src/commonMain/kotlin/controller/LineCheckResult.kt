@@ -8,5 +8,6 @@ data class LineCheckResult(
     val linePositions: Set<Position>? = null,
 
     // positions that are immediately after the line ends, in the same direction
-    val positionsAfterLineEnds: Set<Position>? = null
+    // the boolean specifies whether there is a piece of the same type on the other side of the square
+    val positionsAfterLineEnds: Set<Pair<Position, Boolean>>? = null
 )

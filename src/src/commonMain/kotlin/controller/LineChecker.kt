@@ -28,9 +28,12 @@ class LineChecker(private val model: GameModel) {
             for ((direction, _) in directions) it[direction] = mutableSetOf(position)
         }
 
-        val emptyPositionsAfterLineEnds = (if (getEmptyPositionsAfterLineEnds) mutableMapOf<Direction, MutableSet<Position>>() else null)?.also {
-            for ((direction, _) in directions) it[direction] = mutableSetOf()
-        }
+        // this is a list of pairs, where each pair has the position of the empty square
+        // and whether there is a piece of the same type on the other side
+        val emptyPositionsAfterLineEnds
+            = (if (getEmptyPositionsAfterLineEnds) mutableMapOf<Direction, MutableSet<Pair<Position, Boolean>>>() else null)?.also {
+                for ((direction, _) in directions) it[direction] = mutableSetOf()
+            }
 
         // map that holds the count of consecutive $gamePiece pieces in each direction
         val counts = mutableMapOf<Direction, Int>()
@@ -70,7 +73,11 @@ class LineChecker(private val model: GameModel) {
                     if (model.isInsideBoard(currentPosition)
                             && gameBoard[currentPosition.y][currentPosition.x] == GamePiece.EMPTY) {
                         emptyPositionsAfterLineEnds?.run {
-                            this[direction]!!.add(currentPosition)
+                            val nextPosition = currentPosition + positionDelta
+                            this[direction]!!.add(
+                                    Pair(currentPosition,
+                                        model.isInsideBoard(nextPosition)
+                                        && gameBoard[nextPosition.y][nextPosition.x] == gamePiece))
                         }
                     }
 
