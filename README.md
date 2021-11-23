@@ -10,7 +10,7 @@ Project developed by Rafael Cristino ([GitHub](https://github.com/rafaavc))
 
 ## User guide
 
-This project was developed using JDK 15.0.1. To run it (among other ways) you can import the `src` folder as a project in IntelliJ, and then run it by executing the `run` gradle task. This will open a server at [localhost:8080](http://localhost:8080).
+This project was developed using JDK 15.0.1. To run it (among other ways) you can import the `project` folder as a project in IntelliJ, and then run it by executing the `run` gradle task. This will open a server at [localhost:8080](http://localhost:8080).
 
 By accessing the link you are presented by an immediately ready-to-play game against the computer, as specified in the project proposal.
 
