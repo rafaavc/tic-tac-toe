@@ -26,14 +26,10 @@ class MCTSRobot(private val time: Int) : Robot {
 
         if (defenseCandidate.first != null) {
             if (getLineSizeByMove(model, mCTSCandidate) > defenseCandidate.second) { // the MCTS suggested move makes my line bigger, so I can confidently do it
-                println("Using MCTS candidate even though had defense candidate")
                 return mCTSCandidate
             }
-
-            println("Using defense candidate")
             return defenseCandidate.first!!
         }
-        println("Using MCTS candidate")
         return mCTSCandidate
     }
 

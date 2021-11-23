@@ -8,7 +8,6 @@ import model.GamePiece
 import react.fc
 import react.useState
 import view.ViewProps
-import view.externals.*
 import view.components.Container
 import view.components.CustomSliderInput
 import view.components.LabelField
