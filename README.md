@@ -24,7 +24,7 @@ Here you can choose whether to play against a machine or another human. In both 
 
 ## Design decisions
 
-As architectural pattern I decided to use MVC (model view controller), where the model is implemented in the `commonMain` module (so that it can be shared by server and client), the view is implemented in the `jsMain` project and the controller is split through the three modules (`commonMain`, `jsMain` and `jvmMain`).
+As architectural pattern I decided to use MVC (model view controller), where the model is implemented in the `commonMain` module (so that it can be shared by server and client), the view is implemented in the `jsMain` module and the controller is split through the three modules (`commonMain`, `jsMain` and `jvmMain`).
 
 To obtain the machine's play, the client makes a request to the server and, for simplification, the client always sends the serialized game model in each of these requests, which means that we have a stateless server.
 
