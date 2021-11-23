@@ -33,7 +33,7 @@ Throughout the development design patterns were used where needed. For example:
 - **Strategy** pattern: for how to make a play, for example, in HvH or HvM modes - [code](project/src/jsMain/kotlin/controller/move)
 - **State** pattern: for coordinating the states of the game (playing, pause, welcome screen, error, game over) - [code](project/src/jsMain/kotlin/controller/states)
 - **Abstract factory** pattern: for generically instantiating a move strategy without knowing which of them it is - [code](project/src/jsMain/kotlin/controller/move/factory)
-- **Factory method** pattern: for centralizing the instantiation of game states - [code](project/src/jsMain/kotlin/controller/states/GameStateFactory.kt)
+- **Factory method** pattern: for centralizing the instantiation of game states - [code](project/src/jsMain/kotlin/controller/GameStateFactory.kt)
 
 ## Machine plays
 
