@@ -4,14 +4,35 @@ import ai.node.MCTSNode
 import controller.GameController
 import model.GameModel
 import controller.GameOverCheckResult
+import controller.LineChecker
 import model.GameOverType
 import model.GamePlayer
 import model.utilities.Position
+import model.utilities.coordinates.InnerCoordinateRange
 
 class MCTSRobot : Robot {
     override fun getNextPlay(model: GameModel): Position {
-        // TODO return only moves from a smaller scope in the center of the board
-        if (model.isEmpty) return GameController(model).getPossibleMoves(false).random()
+        val controller = GameController(model)
+        if (model.isEmpty()) {
+            val border = maxOf(model.boardSize / 4, 1)
+            val range = InnerCoordinateRange(border, model.boardSize - 1 - border, border, model.boardSize - 1 - border)
+            return controller.getPossibleMoves(range).random()
+        }
+
+        var defenseCandidate: Position? = null
+        var lineToDefendSize = 0
+
+        if (model.lastPlay != null) {
+            val (hasLine, count, _, emptyPositions) = controller.lineChecker.checkLineAtPosition(model.lastPlay!!, model.target - 1,
+                getLinePieces = true, getEmptyPositionsAfterLineEnds = true)
+
+            lineToDefendSize = count
+
+            // if it has a line that is 1 away from winning, then we could defend
+            if (hasLine && emptyPositions!!.size == 1) defenseCandidate = emptyPositions.first()
+            // if it has a line that is 2 away from winning and has two blank spaces on each side, then we may need to defend
+            else if (count == model.target - 2 && count >= 2 && emptyPositions!!.size == 2) defenseCandidate = emptyPositions.random()
+        }
 
         val root = MCTSNode(model, GameOverCheckResult(GameOverType.NOT_OVER), true)
         root.expand()
@@ -37,7 +58,29 @@ class MCTSRobot : Robot {
 
         println("$count iterations")
 
-        return root.getChildren().maxByOrNull { (it as MCTSNode).getScore() }!!.move!!
+        val mctsCandidate = root.getChildren().maxByOrNull { (it as MCTSNode).getScore() }!!.move!!
+
+        if (defenseCandidate != null) {
+            if (getLineSizeByMove(model, mctsCandidate) > lineToDefendSize) { // the MCTS suggested move makes my line bigger, so I can confidently do it
+                println("Using MCTS candidate even though had defense candidate")
+                return mctsCandidate
+            }
+
+            println("Using defense candidate")
+            return defenseCandidate
+        }
+        println("Using MCTS candidate")
+        return mctsCandidate
+    }
+
+    private fun getLineSizeByMove(gameModel: GameModel, move: Position): Int {
+        // assumes that the model that is passed is not game over
+        val player = getPlayerFromIsMaximizer(true)
+        val model = gameModel.copy()
+        model.makePlay(player, move, false)
+
+        val (_, count) = LineChecker(model).checkLineAtPosition(move, model.target)
+        return count
     }
 
     private fun getPlayerFromIsMaximizer(isMaximizer: Boolean): GamePlayer

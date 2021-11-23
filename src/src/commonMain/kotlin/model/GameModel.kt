@@ -12,7 +12,6 @@ class GameModel(
 ) {
     private val player2GamePiece = if (player1GamePiece == GamePiece.X) GamePiece.O else GamePiece.X
     var lastPlay: Position? = null
-    var isEmpty = true
 
     constructor(player1GamePiece: GamePiece, boardSize: Int = 10, target: Int = 5)
         : this(Array(boardSize) {
@@ -26,6 +25,8 @@ class GameModel(
             }
         }
     }
+
+    fun isEmpty() = lastPlay == null
 
     fun copy(): GameModel = GameModel(copyGameBoard(), player1GamePiece, boardSize, target)
 
@@ -43,8 +44,6 @@ class GameModel(
 
         gameBoard[position.y][position.x] = gamePiece
         lastPlay = position
-
-        if (isEmpty) isEmpty = false
 
         return true
     }

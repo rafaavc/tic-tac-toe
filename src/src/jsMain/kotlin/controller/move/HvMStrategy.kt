@@ -36,7 +36,7 @@ class HvMStrategy(
         setWaitingForServer(true)
         scope.launch {
             try {
-                if (model.isEmpty) delay(500)
+                if (model.isEmpty()) delay(500)
                 makeMove(GamePlayer.PLAYER2, getMachinePlay(model), getNextGameState)
             } catch (e: Throwable) {
                 setGameState(gameStateFactory.createErrorState(e.message))
@@ -64,7 +64,7 @@ class HvMStrategy(
     }
 
     override fun makeFirstMove(getNextGameState: (GameOverCheckResult) -> GameState) {
-        if (model.isEmpty && model.player1GamePiece == GamePiece.O)
+        if (model.isEmpty() && model.player1GamePiece == GamePiece.O)
             makeMachineMove(model, getNextGameState)
     }
 

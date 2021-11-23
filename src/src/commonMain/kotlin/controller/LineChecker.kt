@@ -14,18 +14,22 @@ class LineChecker(private val model: GameModel) {
         position: Position,
         target: Int,
         getLinePieces: Boolean = false,
-        getPositionsAfterLineEnds: Boolean = false
+        getEmptyPositionsAfterLineEnds: Boolean = false
     ) : LineCheckResult {
 
         // checks if there is a line that includes $position that matches the target
         // if there isn't, returns the biggest line that includes that position
-        // return: (foundLineWithDesiredLength, piecesThatMakeTheLine, positionsAfterLineEnds)
+        // return: (foundLineWithDesiredLength, piecesThatMakeTheLine, emptyPositionsAfterLineEnds)
 
         val gamePiece = gameBoard[position.y][position.x]
         if (gamePiece == GamePiece.EMPTY) error("Checking line at position $position, but that position has no piece")
 
         val linePieces = (if (getLinePieces) mutableMapOf<Direction, MutableSet<Position>>() else null)?.also {
             for ((direction, _) in directions) it[direction] = mutableSetOf(position)
+        }
+
+        val emptyPositionsAfterLineEnds = (if (getEmptyPositionsAfterLineEnds) mutableMapOf<Direction, MutableSet<Position>>() else null)?.also {
+            for ((direction, _) in directions) it[direction] = mutableSetOf()
         }
 
         // map that holds the count of consecutive $gamePiece pieces in each direction
@@ -63,14 +67,25 @@ class LineChecker(private val model: GameModel) {
                         continue
                     }
 
+                    if (model.isInsideBoard(currentPosition)
+                            && gameBoard[currentPosition.y][currentPosition.x] == GamePiece.EMPTY) {
+                        emptyPositionsAfterLineEnds?.run {
+                            this[direction]!!.add(currentPosition)
+                        }
+                    }
+
                     // if the current position does not continue the sequence,
                     // add the valid ones up until now to the direction count
                     counts[direction] = currentTotalCountForDirection
                     if (counts[direction]!! >= target)
                         return LineCheckResult(
                             true,
+                            target,
                             linePieces?.run {
                                 linePieces[direction]!!
+                            },
+                            emptyPositionsAfterLineEnds?.run {
+                                emptyPositionsAfterLineEnds[direction]!!
                             }
                         )
                 }
@@ -86,11 +101,15 @@ class LineChecker(private val model: GameModel) {
         }
 
         // getting the direction that contains the largest line
-        val maxDirection = counts.maxWithOrNull { e1, e2 -> e1.value.compareTo(e2.value) }!!.key
+        val maxDirection = counts.maxWithOrNull { e1, e2 -> e1.value.compareTo(e2.value) }!!
 
         return LineCheckResult(false,
+            maxDirection.value,
             linePieces?.run {
-                linePieces[maxDirection]!!
+                linePieces[maxDirection.key]!!
+            },
+            emptyPositionsAfterLineEnds?.run {
+                emptyPositionsAfterLineEnds[maxDirection.key]!!
             }
         )
     }

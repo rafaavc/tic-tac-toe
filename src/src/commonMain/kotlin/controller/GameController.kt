@@ -8,7 +8,7 @@ import model.utilities.coordinates.InnerCoordinateRange
 
 class GameController(private val model: GameModel) {
     private val gameBoard = model.gameBoard
-    private val lineChecker = LineChecker(model)
+    val lineChecker = LineChecker(model)
 
     fun getPossibleMoves(lowerScope: Boolean = false): MutableSet<Position> {
         // when lowerScope is true, this only gets the possible moves that do not
@@ -16,6 +16,10 @@ class GameController(private val model: GameModel) {
         val movesRange = if (lowerScope) getBoardScopeWithPieces(1)
                             else InnerCoordinateRange.all(model.boardSize)
 
+        return getPossibleMoves(movesRange)
+    }
+
+    fun getPossibleMoves(movesRange: CoordinateRange): MutableSet<Position> {
         val possibleMoves = mutableSetOf<Position>()
         iterateThroughBoardRange(movesRange) { x, y ->
             val position = Position(x, y)
@@ -35,7 +39,7 @@ class GameController(private val model: GameModel) {
     }
 
     fun checkGameOver(player: GamePlayer, position: Position, getWinningPieces: Boolean): GameOverCheckResult {
-        val (isOver, winningPieces) = lineChecker.checkLineAtPosition(position, model.target, getWinningPieces)
+        val (isOver, _, winningPieces) = lineChecker.checkLineAtPosition(position, model.target, getWinningPieces)
 
         if (isOver) return GameOverCheckResult(GameOverCheckResult.getGameOverType(player), winningPieces)
         return checkFilledBoard()
