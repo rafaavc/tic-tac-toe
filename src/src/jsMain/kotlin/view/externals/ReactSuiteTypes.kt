@@ -1,4 +1,4 @@
-package rsuite
+package view.externals
 
 enum class RSuiteSize(val value: String) {
     XS("xs"),

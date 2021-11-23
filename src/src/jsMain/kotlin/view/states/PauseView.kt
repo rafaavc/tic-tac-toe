@@ -2,9 +2,9 @@ package view.states
 
 import react.createElement
 import react.fc
-import rsuite.PlayIcon
-import rsuite.RSuiteButton
-import rsuite.RSuiteIconButton
+import view.externals.PlayIcon
+import view.externals.RSuiteButton
+import view.externals.RSuiteIconButton
 import view.ViewProps
 import view.components.CustomIcon
 import view.components.Container

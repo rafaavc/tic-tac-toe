@@ -1,7 +1,7 @@
 @file:JsModule("rsuite")
 @file:JsNonModule
 
-package rsuite
+package view.externals
 
 import org.w3c.dom.events.Event
 import react.*

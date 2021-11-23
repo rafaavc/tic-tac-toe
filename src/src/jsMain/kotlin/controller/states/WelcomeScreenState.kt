@@ -8,10 +8,9 @@ import view.states.WelcomeScreenView
 
 class WelcomeScreenState(
     setGameState: StateSetter<GameState?>,
-    setWaitingForServer: StateSetter<Boolean>,
     gameStateFactory: GameStateFactory,
     val settings: GameSettings
-) : GameState(null, WelcomeScreenView, setGameState, setWaitingForServer, gameStateFactory) {
+) : GameState(null, WelcomeScreenView, setGameState, gameStateFactory) {
 
     override fun play() {
         setGameState(gameStateFactory.createPlayingState())

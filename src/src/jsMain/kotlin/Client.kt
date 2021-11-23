@@ -2,7 +2,7 @@ import react.dom.render
 import kotlinx.browser.document
 import kotlinx.browser.window
 import view.GameContainer
-import rsuite.RSuiteCustomProvider
+import view.externals.RSuiteCustomProvider
 import styled.injectGlobal
 import view.globalStyles
 

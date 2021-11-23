@@ -6,9 +6,9 @@ import model.utilities.Position
 import org.w3c.dom.events.Event
 import react.createElement
 import react.fc
-import rsuite.PauseIcon
-import rsuite.RSuiteIconButton
-import rsuite.RSuiteLoader
+import view.externals.PauseIcon
+import view.externals.RSuiteIconButton
+import view.externals.RSuiteLoader
 import styled.css
 import styled.styledSpan
 import view.ViewProps

@@ -1,7 +1,7 @@
 @file:JsModule("react-icons/fa")
 @file:JsNonModule
 
-package rsuite
+package view.externals
 
 import react.*
 

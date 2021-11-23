@@ -12,7 +12,6 @@ abstract class GameState(
     val model: GameModel?,
     val gameView: FC<ViewProps>,
     protected val setGameState: StateSetter<GameState?>,
-    protected val setWaitingForServer: StateSetter<Boolean>,
     protected val gameStateFactory: GameStateFactory
 ) {
 

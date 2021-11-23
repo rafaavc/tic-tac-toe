@@ -7,7 +7,6 @@ import view.states.ErrorView
 
 class ErrorState(
     setGameState: StateSetter<GameState?>,
-    setWaitingForServer: StateSetter<Boolean>,
     gameStateFactory: GameStateFactory,
     val errorMessage: String?
-) : GameState(null, ErrorView, setGameState, setWaitingForServer, gameStateFactory)
+) : GameState(null, ErrorView, setGameState, gameStateFactory)

@@ -1,12 +1,14 @@
 package view.states
 
 import controller.states.WelcomeScreenState
+import view.externals.RSuiteButton
 import model.GamePiece
 import react.fc
 import react.useState
 import view.ViewProps
-import rsuite.*
+import view.externals.*
 import view.components.Container
+import view.components.CustomSliderInput
 import view.components.LabelField
 import view.defaultButtonSize
 import view.marginHuge
@@ -43,75 +45,39 @@ val WelcomeScreenView = fc<ViewProps> { props ->
         }
     }
 
-    child(Container) {
+    child(CustomSliderInput) {
         attrs {
-            flex = false
-            marginBottom = marginLarge
-        }
-
-        child(LabelField) {
-            attrs {
-                label = "Board size (${boardSize}x$boardSize)"
-            }
-
-            child(RSuiteSlider) {
-                attrs {
-                    value = boardSize.toDouble()
-                    min = 3.0
-                    max = 10.0
-                    step = 1.0
-                    onChange = { value ->
-                        boardSize = value.toInt()
-                        if (target > value) target = value.toInt()
-                    }
-                }
+            label = "Board size (${boardSize}x$boardSize)"
+            value = boardSize.toDouble()
+            min = 3.0
+            max = 10.0
+            step = 1.0
+            onChange = { value ->
+                boardSize = value.toInt()
+                if (target > value) target = value.toInt()
             }
         }
     }
 
-    child(Container) {
+    child(CustomSliderInput) {
         attrs {
-            flex = false
-            marginBottom = marginLarge
-        }
-
-        child(LabelField) {
-            attrs {
-                label = "How many pieces in a row to win ($target)"
-            }
-
-            child(RSuiteSlider) {
-                attrs {
-                    value = target.toDouble()
-                    min = 3.0
-                    max = boardSize.toDouble()
-                    step = 1.0
-                    onChange = { value -> target = value.toInt() }
-                }
-            }
+            label = "How many pieces in a row to win ($target)"
+            value = target.toDouble()
+            min = 3.0
+            max = boardSize.toDouble()
+            step = 1.0
+            onChange = { value -> target = value.toInt() }
         }
     }
 
-    child(Container) {
+    child(CustomSliderInput) {
         attrs {
-            flex = false
-            marginBottom = marginLarge
-        }
-
-        child(LabelField) {
-            attrs {
-                label = "Time for the opponent to think (${timeToThink}s)"
-            }
-
-            child(RSuiteSlider) {
-                attrs {
-                    value = timeToThink
-                    min = 0.5
-                    max = 10.0
-                    step = 0.5
-                    onChange = { value -> timeToThink = value }
-                }
-            }
+            label = "Time for the opponent to think (${timeToThink}s)"
+            value = timeToThink
+            min = 0.5
+            max = 10.0
+            step = 0.5
+            onChange = { value -> timeToThink = value }
         }
     }
 

@@ -8,9 +8,8 @@ import view.states.PauseView
 class PauseState(
     private val gameState: GameState,
     setGameState: StateSetter<GameState?>,
-    setWaitingForServer: StateSetter<Boolean>,
     gameStateFactory: GameStateFactory
-) : GameState(gameState.model, PauseView, setGameState, setWaitingForServer, gameStateFactory) {
+) : GameState(gameState.model, PauseView, setGameState, gameStateFactory) {
 
     override fun play() {
         setGameState(gameState)

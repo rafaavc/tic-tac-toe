@@ -3,7 +3,7 @@ package view.states
 import controller.states.GameOverState
 import react.dom.p
 import react.fc
-import rsuite.RSuiteButton
+import view.externals.RSuiteButton
 import view.ViewProps
 import view.components.Container
 import view.components.GameBoard

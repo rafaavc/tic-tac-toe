@@ -1,7 +1,7 @@
 package view
 
 import kotlinx.css.*
-import rsuite.RSuiteSize
+import view.externals.RSuiteSize
 import view.components.GameBoardSquareStyles
 
 // STYLE CONSTANTS

@@ -14,10 +14,9 @@ import view.states.PlayingView
 class PlayingState(
     model: GameModel,
     setGameState: StateSetter<GameState?>,
-    setWaitingForServer: StateSetter<Boolean>,
     gameStateFactory: GameStateFactory,
     private val moveStrategy: MoveStrategy
-) : GameState(model, PlayingView, setGameState, setWaitingForServer, gameStateFactory) {
+) : GameState(model, PlayingView, setGameState, gameStateFactory) {
 
     init {
         moveStrategy.makeFirstMove(this::getNextGameState)

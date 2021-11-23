@@ -11,21 +11,21 @@ class GameStateFactory(
     private val setWaitingForServer: StateSetter<Boolean>
 ) {
     fun createWelcomeScreenState(): GameState
-        = WelcomeScreenState(setGameState, setWaitingForServer, this, settings)
+        = WelcomeScreenState(setGameState, this, settings)
 
     fun createPlayingState(): GameState {
         val model = GameModel(settings.player1Piece, settings.boardSize, settings.target)
         // TODO move moveStrategy to settings and implement abstract factory
         val moveStrategy = HvMStrategy(model, settings, setGameState, setWaitingForServer, this)
-        return PlayingState(model, setGameState, setWaitingForServer, this, moveStrategy)
+        return PlayingState(model, setGameState, this, moveStrategy)
     }
 
     fun createPauseState(gameState: GameState): GameState
-            = PauseState(gameState, setGameState, setWaitingForServer, this)
+            = PauseState(gameState, setGameState, this)
 
     fun createErrorState(errorMessage: String?): GameState
-            = ErrorState(setGameState, setWaitingForServer, this, errorMessage)
+            = ErrorState(setGameState, this, errorMessage)
 
     fun createGameOverState(model: GameModel, gameOverCheckResult: GameOverCheckResult): GameState
-            = GameOverState(model, setGameState, setWaitingForServer, this, gameOverCheckResult)
+            = GameOverState(model, setGameState, this, gameOverCheckResult)
 }

@@ -6,7 +6,7 @@ import kotlinx.css.LinearDimension
 import kotlinx.css.color
 import kotlinx.css.marginBottom
 import react.fc
-import rsuite.RSuiteButton
+import view.externals.RSuiteButton
 import styled.css
 import styled.styledP
 import view.ViewProps

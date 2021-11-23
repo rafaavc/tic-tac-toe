@@ -35,7 +35,7 @@ class GameModel(
     fun isValidPlay(position: Position) = isInsideBoard(position)
                                                     && gameBoard[position.y][position.x] == GamePiece.EMPTY
 
-    fun getPlayerPiece(player: GamePlayer): GamePiece
+    private fun getPlayerPiece(player: GamePlayer): GamePiece
         = if (player == GamePlayer.PLAYER1) player1GamePiece else player2GamePiece
 
     fun makePlay(player: GamePlayer, position: Position, checkForValidPlay: Boolean = true): Boolean {
