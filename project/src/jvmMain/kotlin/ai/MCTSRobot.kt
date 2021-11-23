@@ -115,23 +115,36 @@ class MCTSRobot(private val time: Int) : Robot {
     private fun getDefenseCandidate(controller: GameController, model: GameModel): Pair<Position?, Int> {
         if (model.lastPlay == null) return Pair(null, 0)
 
-        val (hasLine, count, _, emptyPositions) = controller.lineChecker.checkLineAtPosition(model.lastPlay!!, model.target - 1,
+        val lastPlay = model.lastPlay!!
+
+        val (hasLine, count, _, emptyPositions) = controller.lineChecker.checkLineAtPosition(lastPlay, model.target - 1,
             getLinePieces = true, getEmptyPositionsAfterLineEnds = true)
 
         // if it has a line that is 1 away from winning, then we could defend
-        if (hasLine && emptyPositions!!.size == 1) return Pair(emptyPositions.first().first, count)
+        if (hasLine && emptyPositions!!.size == 1) return Pair(emptyPositions.first().second, count)
+
+        // if it has empty positions, check if that empty position connects two small lines that together would win the game
+        else if (emptyPositions!!.isNotEmpty()) {
+            for (positionTriple in emptyPositions) {
+                val positionAfterEmpty = positionTriple.third ?: continue
+
+                val gamePiece = model.gameBoard[lastPlay.y][lastPlay.x]
+
+                // if there is a piece of the same type on the other side
+                if (model.gameBoard[positionAfterEmpty.y][positionAfterEmpty.x] == gamePiece) {
+                    val (_, countOfPiecesAfterEmpty) = controller.lineChecker.checkLineAtPosition(
+                        positionAfterEmpty, model.target - 1, directionToCheck = positionTriple.first)
+
+                    if (countOfPiecesAfterEmpty + count >= model.target - 1) return Pair(positionTriple.second, model.target - 1) // if the sum of the 2 halves is 1 away from winning
+                }
+            }
+        }
 
         // if it has a line that is 2 away from winning and has two blank spaces on each side, then we may need to defend
-        else if (count == model.target - 2 && count >= 2 && emptyPositions!!.isNotEmpty()) {
-
-            for (positionPair in emptyPositions) {
-                // if there is a piece of the same type on the other side
-                if (positionPair.second) return Pair(positionPair.first, model.target - 1)
-            }
-
+        if (count == model.target - 2 && count >= 2 && emptyPositions.size == 2) {
             // if none of the pieces had another of the same type on the other side,
             // and there are two free squares (if there's only one it is not urgent)
-            if (emptyPositions.size == 2) return Pair(emptyPositions.random().first, count)
+            return Pair(emptyPositions.random().second, count)
         }
 
         return Pair(null, 0)

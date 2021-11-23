@@ -4,7 +4,8 @@ enum class Direction {
     HORIZONTAL,
     VERTICAL,
     DIAGONAL_NEG_SLOPE,
-    DIAGONAL_POS_SLOPE
+    DIAGONAL_POS_SLOPE,
+    ALL
 }
 
 val directions = mapOf(

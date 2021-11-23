@@ -14,7 +14,8 @@ class LineChecker(private val model: GameModel) {
         position: Position,
         target: Int,
         getLinePieces: Boolean = false,
-        getEmptyPositionsAfterLineEnds: Boolean = false
+        getEmptyPositionsAfterLineEnds: Boolean = false,
+        directionToCheck: Direction = Direction.ALL
     ) : LineCheckResult {
 
         // checks if there is a line that includes $position that matches the target
@@ -24,24 +25,27 @@ class LineChecker(private val model: GameModel) {
         val gamePiece = gameBoard[position.y][position.x]
         if (gamePiece == GamePiece.EMPTY) error("Checking line at position $position, but that position has no piece")
 
+        val directionsToCheck = if (directionToCheck == Direction.ALL) directions
+                                else mapOf(Pair(directionToCheck, directions[directionToCheck]!!))
+
         val linePieces = (if (getLinePieces) mutableMapOf<Direction, MutableSet<Position>>() else null)?.also {
-            for ((direction, _) in directions) it[direction] = mutableSetOf(position)
+            for ((direction, _) in directionsToCheck) it[direction] = mutableSetOf(position)
         }
 
         // this is a list of pairs, where each pair has the position of the empty square
-        // and whether there is a piece of the same type on the other side
+        // and of the square that comes after it (by following the line)
         val emptyPositionsAfterLineEnds
-            = (if (getEmptyPositionsAfterLineEnds) mutableMapOf<Direction, MutableSet<Pair<Position, Boolean>>>() else null)?.also {
-                for ((direction, _) in directions) it[direction] = mutableSetOf()
+            = (if (getEmptyPositionsAfterLineEnds) mutableMapOf<Direction, MutableSet<Triple<Direction, Position, Position?>>>() else null)?.also {
+                for ((direction, _) in directionsToCheck) it[direction] = mutableSetOf()
             }
 
         // map that holds the count of consecutive $gamePiece pieces in each direction
         val counts = mutableMapOf<Direction, Int>()
-        for (direction in directions.keys) counts[direction] = 1
+        for (direction in directionsToCheck.keys) counts[direction] = 1
 
         // the directions that are currently being considered
         var currentDirections = mutableMapOf<Direction, List<PositionDelta>>()
-        for ((direction, deltas) in directions) currentDirections[direction] = deltas.toMutableList()
+        for ((direction, deltas) in directionsToCheck) currentDirections[direction] = deltas.toMutableList()
 
         // the directions that will be considered in next iteration (the "children" of the previous)
         var nextDirections = mutableMapOf<Direction, List<PositionDelta>>()
@@ -75,9 +79,7 @@ class LineChecker(private val model: GameModel) {
                         emptyPositionsAfterLineEnds?.run {
                             val nextPosition = currentPosition + positionDelta
                             this[direction]!!.add(
-                                    Pair(currentPosition,
-                                        model.isInsideBoard(nextPosition)
-                                        && gameBoard[nextPosition.y][nextPosition.x] == gamePiece))
+                                Triple(direction, currentPosition, if (model.isInsideBoard(nextPosition)) nextPosition else null))
                         }
                     }
 
@@ -116,7 +118,12 @@ class LineChecker(private val model: GameModel) {
                 linePieces[maxDirection.key]!!
             },
             emptyPositionsAfterLineEnds?.run {
-                emptyPositionsAfterLineEnds[maxDirection.key]!!
+                if (maxDirection.value == 1) { // if the line has only one piece, we need to return the surrounding empty positions
+                    val emptyPositions = mutableSetOf<Triple<Direction, Position, Position?>>()
+                    for ((_, tripleSet) in this) emptyPositions += tripleSet
+                    emptyPositions
+                }
+                else emptyPositionsAfterLineEnds[maxDirection.key]!!
             }
         )
     }
