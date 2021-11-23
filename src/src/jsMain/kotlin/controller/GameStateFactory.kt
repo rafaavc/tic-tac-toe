@@ -16,7 +16,7 @@ class GameStateFactory(
     fun createPlayingState(): GameState {
         val model = GameModel(settings.player1Piece, settings.boardSize, settings.target)
         // TODO move moveStrategy to settings and implement abstract factory
-        val moveStrategy = HvMStrategy(model, setGameState, setWaitingForServer, this)
+        val moveStrategy = HvMStrategy(model, settings, setGameState, setWaitingForServer, this)
         return PlayingState(model, setGameState, setWaitingForServer, this, moveStrategy)
     }
 

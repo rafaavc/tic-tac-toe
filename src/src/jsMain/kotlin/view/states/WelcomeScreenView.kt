@@ -18,7 +18,7 @@ val WelcomeScreenView = fc<ViewProps> { props ->
     var player1Piece by useState(gameState.settings.player1Piece)
     var boardSize by useState(gameState.settings.boardSize)
     var target by useState(gameState.settings.target)
-    val timeToThink by useState(gameState.settings.timeToThink)
+    var timeToThink by useState(gameState.settings.timeToThink)
 
     child(Container) {
         attrs {
@@ -87,6 +87,29 @@ val WelcomeScreenView = fc<ViewProps> { props ->
                     max = boardSize.toDouble()
                     step = 1.0
                     onChange = { value -> target = value.toInt() }
+                }
+            }
+        }
+    }
+
+    child(Container) {
+        attrs {
+            flex = false
+            marginBottom = marginLarge
+        }
+
+        child(LabelField) {
+            attrs {
+                label = "Time for the opponent to think (${timeToThink}s)"
+            }
+
+            child(RSuiteSlider) {
+                attrs {
+                    value = timeToThink
+                    min = 0.5
+                    max = 10.0
+                    step = 0.5
+                    onChange = { value -> timeToThink = value }
                 }
             }
         }

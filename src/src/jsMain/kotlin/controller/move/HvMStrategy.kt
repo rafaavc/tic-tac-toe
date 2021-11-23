@@ -1,6 +1,7 @@
 package controller.move
 
 import controller.GameOverCheckResult
+import controller.GameSettings
 import controller.GameState
 import controller.GameStateFactory
 import getMachinePlay
@@ -15,10 +16,11 @@ private val scope = MainScope()
 
 class HvMStrategy(
     model: GameModel,
+    settings: GameSettings,
     private val setGameState: StateSetter<GameState?>,
     private val setWaitingForServer: StateSetter<Boolean>,
     private val gameStateFactory: GameStateFactory
-) : MoveStrategy(model) {
+) : MoveStrategy(model, settings) {
 
     private fun getGameOverMessage(gameOverCheckResult: GameOverCheckResult): Pair<String?, Boolean> {
         if (gameOverCheckResult.type == GameOverType.PLAYER1_VICTORY) return Pair("You won :)", true)
@@ -37,7 +39,7 @@ class HvMStrategy(
         scope.launch {
             try {
                 if (model.isEmpty()) delay(500)
-                makeMove(GamePlayer.PLAYER2, getMachinePlay(model), getNextGameState)
+                makeMove(GamePlayer.PLAYER2, getMachinePlay(model, settings.timeToThink), getNextGameState)
             } catch (e: Throwable) {
                 setGameState(gameStateFactory.createErrorState(e.message))
             }

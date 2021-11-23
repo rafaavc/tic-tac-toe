@@ -10,7 +10,7 @@ import model.GamePlayer
 import model.utilities.Position
 import model.utilities.coordinates.InnerCoordinateRange
 
-class MCTSRobot : Robot {
+class MCTSRobot(private val time: Int) : Robot {
     override fun getNextPlay(model: GameModel): Position {
         val controller = GameController(model)
         if (model.isEmpty()) {
@@ -39,7 +39,7 @@ class MCTSRobot : Robot {
 
         var count = 0
         val start = System.currentTimeMillis()
-        while(System.currentTimeMillis() - start < 3000) {
+        while(System.currentTimeMillis() - start < time) {
             val promisingNode = root.findBestDescendantUCT()
             if (!promisingNode.isGameOver())
                 promisingNode.expand()

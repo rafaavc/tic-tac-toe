@@ -1,5 +1,4 @@
 import ai.MCTSRobot
-import ai.Robot
 import model.GameModel
 import io.ktor.application.*
 import io.ktor.features.*
@@ -29,8 +28,6 @@ fun HTML.index() {
 }
 
 fun main() {
-    val robot: Robot = MCTSRobot()
-
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
         install(ContentNegotiation) {
             json()
@@ -47,8 +44,9 @@ fun main() {
                 call.respondHtml(HttpStatusCode.OK, HTML::index)
             }
             post("/play") {
+                val time = call.request.queryParameters["time"]?.toInt() ?: 3000
                 val gameModel = call.receive<GameModel>()
-                val response = robot.getNextPlay(gameModel)
+                val response = MCTSRobot(time).getNextPlay(gameModel)
 
                 call.respond(response)
             }

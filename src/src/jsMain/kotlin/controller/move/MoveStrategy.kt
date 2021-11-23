@@ -4,11 +4,12 @@ import controller.GameController
 import controller.GameState
 import model.GameModel
 import controller.GameOverCheckResult
+import controller.GameSettings
 import model.GamePiece
 import model.GamePlayer
 import model.utilities.Position
 
-abstract class MoveStrategy(protected val model: GameModel) {
+abstract class MoveStrategy(protected val model: GameModel, protected val settings: GameSettings) {
     protected val controller = GameController(model)
 
     abstract fun canMakeMove(squarePosition: Position): Boolean
