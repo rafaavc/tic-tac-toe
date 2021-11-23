@@ -4,7 +4,7 @@ import controller.GameState
 import controller.GameStateFactory
 import controller.move.MoveStrategy
 import model.GameModel
-import model.GameOverCheckResult
+import controller.GameOverCheckResult
 import model.GamePiece
 import model.GamePlayer
 import model.utilities.Position

@@ -3,7 +3,7 @@ package controller.move
 import controller.GameController
 import controller.GameState
 import model.GameModel
-import model.GameOverCheckResult
+import controller.GameOverCheckResult
 import model.GamePiece
 import model.GamePlayer
 import model.utilities.Position

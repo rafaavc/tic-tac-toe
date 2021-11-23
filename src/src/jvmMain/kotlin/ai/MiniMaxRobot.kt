@@ -2,7 +2,7 @@ package ai
 
 import ai.node.Node
 import model.GameModel
-import model.GameOverCheckResult
+import controller.GameOverCheckResult
 import model.GameOverType
 import model.utilities.Position
 

@@ -3,7 +3,7 @@ package ai
 import ai.node.MCTSNode
 import controller.GameController
 import model.GameModel
-import model.GameOverCheckResult
+import controller.GameOverCheckResult
 import model.GameOverType
 import model.GamePlayer
 import model.utilities.Position
@@ -49,7 +49,7 @@ class MCTSRobot : Robot {
         var isMaximizer = node.isMaximizer
 
         var gameOverCheckResult = if (node.move != null) {
-            controller.checkGameOver(getPlayerFromIsMaximizer(!isMaximizer /* we want the player from the last node */), node.move)
+            controller.checkGameOver(getPlayerFromIsMaximizer(!isMaximizer /* we want the player from the last node */), node.move, false)
         } else GameOverCheckResult(GameOverType.NOT_OVER)
 
         val possibleMoves = controller.getPossibleMoves()
@@ -62,7 +62,7 @@ class MCTSRobot : Robot {
 
             model.makePlay(player, move, false)
 
-            gameOverCheckResult = controller.checkGameOver(player, move)
+            gameOverCheckResult = controller.checkGameOver(player, move, false)
             isMaximizer = !isMaximizer
         }
 

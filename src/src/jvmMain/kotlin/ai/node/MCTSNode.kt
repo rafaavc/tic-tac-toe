@@ -1,7 +1,7 @@
 package ai.node
 
 import model.GameModel
-import model.GameOverCheckResult
+import controller.GameOverCheckResult
 import model.GameOverType
 import model.utilities.Position
 import kotlin.math.ln

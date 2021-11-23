@@ -1,8 +1,10 @@
-package model
+package controller
 
+import model.GameOverType
+import model.GamePlayer
 import model.utilities.Position
 
-class GameOverCheckResult(val type: GameOverType, val winningPieces: Set<Position>? = null) {
+data class GameOverCheckResult(val type: GameOverType, val winningPieces: Set<Position>? = null) {
     var gameOverMessage: String? = null
     var showSuccess: Boolean = false
 

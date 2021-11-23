@@ -3,7 +3,6 @@ package controller
 import controller.move.HvMStrategy
 import controller.states.*
 import model.GameModel
-import model.GameOverCheckResult
 import react.StateSetter
 
 class GameStateFactory(

@@ -14,4 +14,5 @@ open class Position(val x: Int, val y: Int) {
 
     override fun equals(other: Any?) = (other is Position) && other.x == x && other.y == y
     override fun hashCode() = 31 * x + y  // generated automatically
+    override fun toString() = "($x, $y)"
 }

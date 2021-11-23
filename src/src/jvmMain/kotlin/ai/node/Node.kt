@@ -1,6 +1,7 @@
 package ai.node
 
 import controller.GameController
+import controller.GameOverCheckResult
 import model.*
 import model.utilities.Position
 
@@ -12,8 +13,8 @@ open class Node(
     val move: Position? = null
 ) {
     private val score = 10
+    private val controller = GameController(model)
     protected val nodeChildren = mutableListOf<Node>()
-    protected val controller = GameController(model)
     protected var expanded = false
 
     protected fun executePossibleMoves(): List<Triple<GameModel, GameOverCheckResult, Position>> {
@@ -24,7 +25,7 @@ open class Node(
         for (move in possibleMoves) {
             val model = model.copy()
             model.makePlay(player, move)
-            newModels.add(Triple(model, controller.checkGameOver(player, move), move))
+            newModels.add(Triple(model, GameController(model).checkGameOver(player, move, false), move))
         }
 
         return newModels

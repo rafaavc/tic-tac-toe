@@ -1,5 +1,6 @@
 package controller.move
 
+import controller.GameOverCheckResult
 import controller.GameState
 import controller.GameStateFactory
 import getMachinePlay

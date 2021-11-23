@@ -3,7 +3,7 @@ package controller.states
 import controller.GameState
 import controller.GameStateFactory
 import model.GameModel
-import model.GameOverCheckResult
+import controller.GameOverCheckResult
 import react.StateSetter
 import view.states.GameOverView
 
