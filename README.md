@@ -1,30 +1,14 @@
 # TicTacToe
 
-- [User Guide](#user-guide)
-- [Design Decisions](#design-decisions)
-- [Machine Plays](#machine-plays)
-
-[[click here to see a demonstration gif]](docs/demo.gif)
-
-Project developed by Rafael Cristino ([GitHub](https://github.com/rafaavc))
+![Demo](docs/demo.gif)
 
 ## User guide
 
-This project was developed using JDK 15.0.1. To run it (among other ways) you can import the `project` folder as a project in IntelliJ, and then run it by executing the `run` gradle task. This will open a server at [localhost:8080](http://localhost:8080).
-
-By accessing the link you are presented by an immediately ready-to-play game against the computer, as specified in the project proposal.
-
-[[click here to see the beginning screen]](docs/beginning.png)
-
-Here you can play the game or pause / quit to main menu. If you go to the main menu this is what you'll see:
-
-[[click here to see the main menu]](docs/mainMenu.png)
-
-Here you can choose whether to play against a machine or another human. In both of these options you can customize the size of the game and the target length of the line of pieces to win, but if you choose to play against the machine you can also choose the piece you want (X starts first) and the amount of time that the machine has to find a move. Then, you can start a game by pressing the play button.
+This project was developed using JDK 15.0.1. To run it (among other ways) you can execute the `run` gradle task. This will open a server at [localhost:8080](http://localhost:8080).
 
 ## Design decisions
 
-As architectural pattern I decided to use MVC (model view controller), where the model is implemented in the `commonMain` module (so that it can be shared by server and client), the view is implemented in the `jsMain` module and the controller is split through the three modules (`commonMain`, `jsMain` and `jvmMain`).
+MVC is used as architectural pattern, where the model is implemented in the `commonMain` module (so that it can be shared by server and client), the view is implemented in the `jsMain` module and the controller is split through the three modules (`commonMain`, `jsMain` and `jvmMain`).
 
 To obtain the machine's play, the client makes a request to the server and, for simplification, the client always sends the serialized game model in each of these requests, which means that we have a stateless server.
 
